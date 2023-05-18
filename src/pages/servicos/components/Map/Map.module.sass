@@ -1,0 +1,75 @@
+@import ../../../../styles/helpers.sass
+
+
+
+
+.map
+    display: flex
+    
+    width: 100%
+    height: 100%
+
+
+
+
+
+
+$bg-grad: radial-gradient(#080810 10%, #000001) //background gradient
+
+$lb: #276ef2 //light blue color
+
+$bxs: inset 0 0 200px //box-shadow properties w/out color val
+
+///////////mixins/////////
+
+=ab-center
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+//mixin to create a box with a specified width and height - because I'm lazy
+=box($w, $h)
+  width: $w
+  height: $h  
+
+
+.dot
+    +ab-center
+    +box(60px,60px)
+
+
+    z-index: 3
+    
+
+.ping
+    width: 40vmin
+    height: 50vmin
+    +ab-center
+    box-shadow: $bxs rgba($lb,.0)
+    border: 4px solid rgba($lb,.0)
+    border-radius: 50%
+    animation: ping 3s ease infinite
+    z-index: 2
+
+.loc
+  width: 50px
+  height: 50px
+  border: 4px solid rgba($lb,.0)
+  border-radius: 50%
+  z-index: 2
+    
+
+
+
+@keyframes ping
+  0%
+    +box(0px,0px)
+    box-shadow: $bxs rgba($lb,.2)
+    border: 3px solid rgba($lb,.8)
+  60%
+    box-shadow: $bxs rgba($lb,.0)
+    border: 3px solid rgba($lb,.1)
+  90%
+    +box(50vmin,50vmin)
+    

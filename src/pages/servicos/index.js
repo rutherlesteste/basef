@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./Home.module.sass";
 import Card from "@/components/Card";
-import CardService from "@/components/CardService";
 
 import Map from "./components/Map/index";
 import { useSelector, useDispatch } from "react-redux";

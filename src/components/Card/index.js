@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMaps } from "@/context/locationSlice";
 import { debounce } from "lodash";
 import cn from "classnames";
+import CardService from "../CardService";
 
 import style from "./Card.module.sass";
 import Image from "next/image";
@@ -166,67 +167,78 @@ const Card = () => {
               </div>
             </div>
           </div>
-          <div className={style["input--origem"]}>
-            <div className={style["address--conteiner-origem"]}>
-              <Icon
-                className={style["svgorigin--destino"]}
-                name="originDestination"
-              />
-              <div className={style["address"]}>
-                <div
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                    width: "100%",
-                  }}
-                >
-                  <input
-                    className={style["input--address"]}
-                    placeholder="De Onde?"
-                    onChange={(e) =>
-                      handleInputChange("origin", e.target.value)
-                    }
-                    value={locationInput.valueOrigin}
-                    ref={locationRef}
-                  />
-                  <IconButton onClick={() => del("origin")}>
-                    <CancelOutlined />
-                  </IconButton>
-                </div>
-                <div
-                  style={{
-                    borderTopColor: "gray",
-                    borderTopWidth: "1px",
-                    borderTopStyle: "solid",
-                    width: "100%",
-                    marginBlock: "10px",
-                    height: "1px",
-                  }}
-                />
-                <div
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                    width: "100%",
-                  }}
-                >
-                  <input
-                    className={style["input--address"]}
-                    placeholder="Para onde?"
-                    ref={destinationRef}
-                    onChange={(e) =>
-                      handleInputChange("destination", e.target.value)
-                    }
-                    value={locationInput.valueDestination}
-                  />
 
-                  <IconButton onClick={() => del("destination")}>
-                    <CancelOutlined />
-                  </IconButton>
+          {1 == 2 && (
+            <div className={style["input--origem"]}>
+              <div className={style["address--conteiner-origem"]}>
+                <Icon
+                  className={style["svgorigin--destino"]}
+                  name="originDestination"
+                />
+                <div className={style["address"]}>
+                  <div
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      width: "100%",
+                    }}
+                  >
+                    <input
+                      className={style["input--address"]}
+                      placeholder="De Onde?"
+                      onChange={(e) =>
+                        handleInputChange("origin", e.target.value)
+                      }
+                      value={locationInput.valueOrigin}
+                      ref={locationRef}
+                    />
+                    <IconButton onClick={() => del("origin")}>
+                      <CancelOutlined />
+                    </IconButton>
+                  </div>
+                  <div
+                    style={{
+                      borderTopColor: "gray",
+                      borderTopWidth: "1px",
+                      borderTopStyle: "solid",
+                      width: "100%",
+                      marginBlock: "10px",
+                      height: "1px",
+                    }}
+                  />
+                  <div
+                    style={{
+                      flexDirection: "row",
+                      display: "flex",
+                      width: "100%",
+                    }}
+                  >
+                    <input
+                      className={style["input--address"]}
+                      placeholder="Para onde?"
+                      ref={destinationRef}
+                      onChange={(e) =>
+                        handleInputChange("destination", e.target.value)
+                      }
+                      value={locationInput.valueDestination}
+                    />
+
+                    <IconButton onClick={() => del("destination")}>
+                      <CancelOutlined />
+                    </IconButton>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {1 == 1 &&
+            [3, 4, 5].map((suggestion, index) => (
+              <div style={{ padding: "1%" }}>
+                {" "}
+                <CardService />{" "}
+              </div>
+            ))}
 
           {suggestionsArray?.isOpen &&
             suggestionsArray.suggestions.map((suggestion, index) => (
