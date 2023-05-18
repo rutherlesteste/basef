@@ -15,7 +15,7 @@ import { IconButton } from "@mui/material";
 
 const avatar = require("../../images/avatar.jpg");
 
-const Card = () => {
+const Card = (props) => {
   const [suggestionsArray, setSuggestionsArray] = useState({
     suggestions: [],
     isOpen: false,
@@ -157,7 +157,7 @@ const Card = () => {
                   <Image className={style["img-1"]} alt="" src={avatar} />
                 </div>
                 <div className={style["media--content"]}>
-                  <p className={style["text-2"]}>Savannah Nguyen</p>
+                  <p className={style["text-2"]}>{props.name}</p>
                   <div className={style["message"]}>
                     <Icon name="message" />
                     <Icon className={style.message} name="notification" />
