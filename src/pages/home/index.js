@@ -10,7 +10,6 @@ import useHandleNotification from "@/hooks/useNotification";
 import useHandleService from "@/hooks/useService";
 import { toName } from "@/libs/utils";
 import CardForm from "../../components/CardForm";
-import { useRouter } from "next/router";
 
 export default function index() {
   const dispatch = useDispatch();
@@ -46,11 +45,10 @@ export default function index() {
   return (
     <>
       <div className={styles.home}>
-        {!service.value && (
-          <Card
-            name={user && user?.name && toName(user?.name)}
-            children={<Servico />}
-          ></Card>
+        <Map maps={maps} />
+
+        {!service.value && !service.id && (
+          <Card name={user && user?.name && toName(user?.name)}></Card>
         )}
 
         {service.value && (

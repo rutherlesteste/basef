@@ -64,7 +64,7 @@ const Card = ({ config }) => {
     }
   };
 
-  function handleService(id, servico, image, preco) {
+  function handleService(id, servico, image, preco, unit, helpers, hours) {
     dispatch(
       setService({
         ...service,
@@ -72,6 +72,9 @@ const Card = ({ config }) => {
         servico,
         image,
         value: preco,
+        preco: unit,
+        helpers,
+        hours,
       })
     );
 
@@ -101,7 +104,17 @@ const Card = ({ config }) => {
                   config.value_mounters,
                   config.value_hours
                 )
-              )
+              ),
+              valor(
+                config.id,
+                config.value_km,
+                config.value_base,
+                config.value_helpers,
+                config.value_mounters,
+                config.value_hours
+              ),
+              config.helpers,
+              config.hours
             )
           }
           className={style.card}

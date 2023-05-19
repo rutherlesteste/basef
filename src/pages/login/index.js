@@ -1,81 +1,79 @@
-import React from "react";
-import styles from "./login.module.sass";
-import { useState } from "react";
-import EmailIcon from "@mui/icons-material/Email";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import LockIcon from "@mui/icons-material/Lock";
+import Image from "../../components/Image";
+import React, { useState } from "react";
+import TextInput from "../../components/TextInput";
+import axios from "axios";
+import cn from "classnames";
+import styles from "./SignIn.module.sass";
+import { use100vh } from "react-div-100vh";
+import GoogleAuth from "./googleAuth";
+
+import { useRouter } from "next/router";
+
 import Link from "next/link";
-import { useServer } from "@/server/server";
 
 export default function Login() {
+  const [senha, setSenha] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [show, setShow] = useState(false);
-  const { loginUsingCredentials } = useServer();
-  const handleLogin = () => {
-    loginUsingCredentials(email, password);
-  };
-  console.log(email, password);
+  const heightWindow = use100vh();
+
+  async function entrar() {
+    try {
+      const response = await axios.request(options);
+
+      history.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <div className={"container"}>
-      <form className={styles.form}>
-        <img width={50} className={styles.logo} />
-        <div className={styles.email}>
-          <label>
-            <div className={styles.iconM}>
-              <EmailIcon />
-            </div>
-            <input
-              required
-              id="email"
-              type="email"
-              className={styles.input}
-              placeholder="Email"
-              value={email}
-              onChange={(text) => setEmail(text.target.value)}
-              autoComplete={"@gmail.com"}
-            />
-          </label>
-        </div>
-        <div className={styles.senha}>
-          <label>
-            <div className={styles.iconP} onClick={() => setShow(!show)}>
-              {show ? <LockOpenIcon /> : <LockIcon />}
-            </div>
-            <input
-              required
-              id="password"
-              type={show ? "text" : "password"}
-              className={styles.input}
-              placeholder="Senha"
-              autoComplete="password"
-              value={password}
-              // Note que "text" é um evento
-              onChange={(text) => setPassword(text.target.value)}
-            />
-          </label>
-        </div>
-        <button onClick={handleLogin()} className={styles.submit}>
-          Entrar
-        </button>
-        <div className={styles.separato}></div>{" "}
-        <div className={styles.separator}></div>
-        <div className={styles.h1}> Ou </div>
-        <div className={styles.socialBtn}>
-          <div className={styles.google}>
-            <button></button>
-          </div>
-          <div className={styles.apple}>
-            <button></button>
+    <div className={styles.login} style={{ minHeight: heightWindow }}>
+      <div className={styles.wrapper}>
+        <Link className={styles.logo} href="/">
+          <Image
+            className={styles.pic}
+            src="/images/logo-dark.png"
+            srcDark="/images/logo-light.png"
+            alt="Core"
+          />
+        </Link>
+
+        <div className={cn("h5", styles.title)}>Bem vindo a FreteMe!</div>
+
+        <div className={styles.body}>
+          <TextInput
+            className={styles.field}
+            name="email"
+            type="email"
+            placeholder="Your email"
+            required
+            icon="mail"
+            value={email}
+            setValue={setEmail}
+          />
+          <TextInput
+            className={styles.field}
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            icon="lock"
+            value={senha}
+            setValue={setSenha}
+          />
+          <button onClick={entrar} className={cn("button", styles.button)}>
+            Entrar
+          </button>
+          <div className={styles.subtitle}>Ou entre com suas redes sociais</div>
+          <GoogleAuth />
+          <div className={styles.info}>
+            Não tem uma conta?{"  "}
+            <Link className={styles.link} href="/cadastro">
+              Cadastre-se
+            </Link>
           </div>
         </div>
-        <div className={styles.signin}>
-          <p className={styles.text}>Não tem conta?</p>
-          <Link href="./entrar/cadastro" className={styles.registerLink}>
-            Cadastre-se
-          </Link>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }
