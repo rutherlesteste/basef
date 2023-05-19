@@ -1,28 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Home.module.sass";
 import Card from "@/components/Card";
-import CardService from "@/components/CardService";
-
+import Servico from "../servico";
 import Map from "./components/Map/index";
 import { useSelector, useDispatch } from "react-redux";
-
-import {
-  setOrigin,
-  setDestination,
-  setLocation,
-  setMaps,
-} from "@/context/locationSlice";
+import { setMaps } from "@/context/locationSlice";
 import useHandleConfig from "@/hooks/useConfig";
 import useHandleNotification from "@/hooks/useNotification";
 import useHandleService from "@/hooks/useService";
 import { toName } from "@/libs/utils";
+import CardForm from "../../components/CardForm";
+import { useRouter } from "next/router";
 
 export default function index() {
   const dispatch = useDispatch();
   const maps = useSelector((state) => state.location.maps);
+  const service = useSelector((state) => state.service.service);
+
   const { config } = useHandleConfig();
   const { notification } = useHandleNotification();
   const { order, user } = useHandleService();
+  const [latitude, setLatitude] = useState();
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -39,14 +38,29 @@ export default function index() {
           })
         );
       });
+
+      setLatitude(latitude);
     }
-  }, []);
+  }, [latitude]);
 
   return (
     <>
       <div className={styles.home}>
-        <Map maps={maps} />
-        <Card name={user && user?.name && toName(user?.name)} />
+        {!service.value && (
+          <Card
+            name={user && user?.name && toName(user?.name)}
+            children={<Servico />}
+          ></Card>
+        )}
+
+        {service.value && (
+          <div style={{ padding: "1%", width: "100%" }}>
+            <CardForm
+              children={<Servico service={service} />}
+              service={service}
+            />
+          </div>
+        )}
       </div>
     </>
   );

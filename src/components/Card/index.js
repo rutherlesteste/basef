@@ -1,22 +1,25 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMaps } from "@/context/locationSlice";
+import { setMaps, setSuggestions } from "@/context/locationSlice";
 import { debounce } from "lodash";
 import cn from "classnames";
 import CardService from "../CardService";
-
+import useHandleConfig from "@/hooks/useConfig";
 import style from "./Card.module.sass";
 import Image from "next/image";
 import Icon from "../Icons";
 import useGetRoute from "@/utils/getRouter";
+import { setService } from "@/context/serviceSlice";
 import List from "../List";
 import { Cancel, CancelOutlined, LocationDisabled } from "@mui/icons-material";
 import getDistance from "@/utils/getDistance";
 import { IconButton } from "@mui/material";
-
+import Card from "../Cards";
+import CardForm from "../CardForm";
+import Servico from "../../pages/servico";
 const avatar = require("../../images/avatar.jpg");
 
-const Card = (props) => {
+const Cards = (props) => {
   const [suggestionsArray, setSuggestionsArray] = useState({
     suggestions: [],
     isOpen: false,
@@ -24,8 +27,10 @@ const Card = (props) => {
   });
 
   const location = useSelector((state) => state.location.value);
+  const { config } = useHandleConfig();
 
   const maps = useSelector((state) => state.location.maps);
+  const service = useSelector((state) => state.service.service);
 
   const dispatch = useDispatch();
 
@@ -75,14 +80,27 @@ const Card = (props) => {
           place: data.place_name,
           status: "origin",
           origin: [data.center[0], data.center[1]],
+          origin_place: data.place_name,
         })
       );
+
+      setSuggestionsArray({
+        ...suggestionsArray,
+        suggestions: [],
+        isOpen: false,
+      });
 
       destinationRef.current.focus();
     } else {
       setLocationInput({
         ...locationInput,
         valueDestination: data.place_name,
+      });
+
+      setSuggestionsArray({
+        ...suggestionsArray,
+        suggestions: [],
+        isOpen: false,
       });
 
       dispatch(
@@ -115,7 +133,7 @@ const Card = (props) => {
       handleRoute(value, locationType);
     }
   };
-
+  console.log(config);
   function del(input) {
     if (input == "origin") {
       setLocationInput({
@@ -168,7 +186,7 @@ const Card = (props) => {
             </div>
           </div>
 
-          {1 == 2 && (
+          {!service.distance && (
             <div className={style["input--origem"]}>
               <div className={style["address--conteiner-origem"]}>
                 <Icon
@@ -232,13 +250,16 @@ const Card = (props) => {
             </div>
           )}
 
-          {1 == 1 &&
-            [3, 4, 5].map((suggestion, index) => (
-              <div style={{ padding: "1%" }}>
+          {service.distance &&
+            !service.value &&
+            config?.map((config, index) => (
+              <div key={index} style={{ padding: "3%", width: "100%" }}>
                 {" "}
-                <CardService />{" "}
+                <CardService config={config} />{" "}
               </div>
             ))}
+
+       
 
           {suggestionsArray?.isOpen &&
             suggestionsArray.suggestions.map((suggestion, index) => (
@@ -255,4 +276,4 @@ const Card = (props) => {
   );
 };
 
-export default Card;
+export default Cards;

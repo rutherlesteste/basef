@@ -1,3 +1,4 @@
+import { formatDistance } from "date-fns";
 import { MAP_BOX_TOKEN } from "@/constants/keys";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -12,9 +13,16 @@ const getDistance = async (origin, destination) => {
 
     const response = await axios.get(url);
     route = response.data.routes;
-    console.log(route);
+
+    if (route.length > 0) {
+      const { distance, duration } = route[0];
+
+      const distancia = Math.round(parseInt(distance) / 1000);
+    } else {
+      console.log("Nenhuma rota encontrada.");
+    }
   } catch (error) {
-    console.log(error);
+    console.log("Ocorreu um erro:", error.message);
   }
 
   return route;

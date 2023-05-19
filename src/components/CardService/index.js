@@ -1,10 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMaps } from "@/context/locationSlice";
-import { debounce } from "lodash";
 import cn from "classnames";
 import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
-import Servicos from "../Servicos";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
@@ -12,27 +9,21 @@ import AccessTimeTwoToneIcon from "@mui/icons-material/AccessTimeTwoTone";
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
 
 import style from "./Card.module.sass";
-import Image from "next/image";
-import Icon from "../Icons";
-import useGetRoute from "@/utils/getRouter";
-import List from "../List";
-import { Cancel, CancelOutlined, LocationDisabled } from "@mui/icons-material";
-import getDistance from "@/utils/getDistance";
-import { Badge, Chip, Divider, IconButton } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
+import { Divider } from "@mui/material";
+import { formatPrice } from "@/utils";
+import { setService } from "@/context/serviceSlice";
 
 const avatar = require("../../images/image-freteme-truck.png");
 
-const Card = () => {
+const Card = ({ config }) => {
   const [suggestionsArray, setSuggestionsArray] = useState({
     suggestions: [],
     isOpen: false,
     input: "",
   });
 
-  const location = useSelector((state) => state.location.value);
-
-  const maps = useSelector((state) => state.location.maps);
+  const service = useSelector((state) => state.service.service);
+  const distance = service.distance;
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -46,106 +37,47 @@ const Card = () => {
 
   const dispatch = useDispatch();
 
-  const locationRef = useRef(null);
-  const destinationRef = useRef(null);
-  const [locationInput, setLocationInput] = useState({
-    origin: "",
-    destination: "",
-    valueOrigin: "",
-    valueDestination: "",
-    inputType: "",
-  });
-
-  const handleRoute = debounce(async (data, input) => {
-    if (!data || data.length < 1) {
-      setSuggestionsArray({
-        ...suggestionsArray,
-        isOpen: false,
-        suggestions: [],
-      });
-      return;
-    }
-
-    if (data.length > 3) {
-      const routeSuggestions = await useGetRoute(data, input);
-      setSuggestionsArray({
-        ...suggestionsArray,
-        isOpen: true,
-        suggestions: routeSuggestions,
-        input: input,
-      });
-    }
-  }, 300);
-
-  const handleSetOrigem = async (data) => {
-    if (locationInput.inputType == "origin") {
-      setLocationInput({
-        ...locationInput,
-        valueOrigin: data.place_name,
-      });
-
-      dispatch(
-        setMaps({
-          ...maps,
-          lat: data.center[1],
-          lng: data.center[0],
-          place: data.place_name,
-          status: "origin",
-          origin: [data.center[0], data.center[1]],
-        })
+  const valor = (
+    id,
+    value_km,
+    value_base,
+    value_helpers,
+    value_mounters,
+    value_hours
+  ) => {
+    if (id == 3) {
+      return distance < 6 ? 9 : distance * value_km;
+    } else if (id == 1) {
+      return (
+        value_base +
+        distance * value_km +
+        service.helpers * value_helpers +
+        service.mounters * value_mounters
       );
-
-      destinationRef.current.focus();
     } else {
-      setLocationInput({
-        ...locationInput,
-        valueDestination: data.place_name,
-      });
-
-      dispatch(
-        setMaps({
-          ...maps,
-          lat: data.center[1],
-          lng: data.center[0],
-          place: data.place_name,
-          status: "destination",
-          destination: [data.center[0], data.center[1]],
-        })
+      return (
+        value_hours * 3 +
+        service.helpers * value_helpers +
+        service.mounters * value_mounters +
+        service.hours * value_hours
       );
     }
   };
 
-  const handleInputChange = (locationType, value) => {
-    if (locationType == "origin") {
-      setLocationInput({
-        ...locationInput,
-        valueOrigin: value,
-        inputType: locationType,
-      });
-      handleRoute(value, locationType);
-    } else {
-      setLocationInput({
-        ...locationInput,
-        valueDestination: value,
-        inputType: locationType,
-      });
-      handleRoute(value, locationType);
-    }
-  };
+  function handleService(id, servico, image, preco) {
+    dispatch(
+      setService({
+        ...service,
+        id,
+        servico,
+        image,
+        value: preco,
+      })
+    );
 
-  function del(input) {
-    if (input == "origin") {
-      setLocationInput({
-        ...locationInput,
-        valueOrigin: "",
-      });
-    } else {
-      setLocationInput({
-        ...locationInput,
-        valueDestination: "",
-      });
-    }
+    console.log(service);
   }
+
   return (
     <div
       className={cn("container", {
@@ -154,48 +86,80 @@ const Card = () => {
       })}
     >
       <div className={style["card-container"]}>
-        <div className={style.card}>
+        <Item
+          onClick={() =>
+            handleService(
+              config.id,
+              config.service,
+              config.image,
+              formatPrice(
+                valor(
+                  config.id,
+                  config.value_km,
+                  config.value_base,
+                  config.value_helpers,
+                  config.value_mounters,
+                  config.value_hours
+                )
+              )
+            )
+          }
+          className={style.card}
+        >
           <Stack
             direction="row"
             divider={<Divider orientation="vertical" flexItem />}
-            spacing={2}
-            justifyContent={"space-around"}
+            spacing={1}
+            justifyContent={"space-between"}
+            width={"100%"}
           >
             <div className={style.avatar}>
-              <Badge
-                overlap="circular"
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                badgeContent={<span>teste</span>}
-              >
-                <Avatar
-                  srcSet={"../../images/avatar.jpg"}
-                  sx={{ width: 56, height: 56 }}
-                />
-              </Badge>
+              <img src={config.image} />
             </div>
 
             <div className={style.preco}>
-              <div className={style["text-2"]}>
-                <span>R$32.50</span>
+              <div className={style["text-3"]}>
+                <span>{config.service}</span>
+              </div>
+              <div>
+                <span>
+                  {formatPrice(
+                    valor(
+                      config.id,
+                      config.value_km,
+                      config.value_base,
+                      config.value_helpers,
+                      config.value_mounters,
+                      config.value_hours
+                    )
+                  )}
+                </span>
               </div>
             </div>
 
             <div className={style["message"]}>
-              <div>
-                <AccessTimeTwoToneIcon />
-                <span>5h</span>
-              </div>
-              <div>
-                <PersonAddAltTwoToneIcon />
-                <span>1</span>
-              </div>
-              <div>
-                <AddRoadTwoToneIcon />
-                <span>250</span>
-              </div>
+              {config.hours > 0 && (
+                <div>
+                  <AccessTimeTwoToneIcon />
+                  <span>{config.hours}h</span>
+                </div>
+              )}
+
+              {config.helpers > 0 && (
+                <div>
+                  <PersonAddAltTwoToneIcon />
+                  <span>{config.helpers}</span>
+                </div>
+              )}
+              {config.value_km > 0 && (
+                <div>
+                  <AddRoadTwoToneIcon />
+                  <span>{service.distance} Km</span>
+                </div>
+              )}
             </div>
           </Stack>
-        </div>
+        </Item>
       </div>
     </div>
   );
