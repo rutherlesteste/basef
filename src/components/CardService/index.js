@@ -1,28 +1,15 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import cn from "classnames";
 import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import AccessTimeTwoToneIcon from "@mui/icons-material/AccessTimeTwoTone";
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
-
 import style from "./Card.module.sass";
 import { Divider } from "@mui/material";
 import { formatPrice } from "@/utils";
-import { setService } from "@/context/serviceSlice";
 
-const avatar = require("../../images/image-freteme-truck.png");
-
-const Card = ({ config }) => {
-  const [suggestionsArray, setSuggestionsArray] = useState({
-    suggestions: [],
-    isOpen: false,
-    input: "",
-  });
-
-  const service = useSelector((state) => state.service.service);
+const CardService = ({ config, handleService, service }) => {
   const distance = service.distance;
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -35,86 +22,66 @@ const Card = ({ config }) => {
     alignItems: "center",
   }));
 
-  const dispatch = useDispatch();
-
-  const valor = (
-    id,
-    value_km,
-    value_base,
-    value_helpers,
-    value_mounters,
-    value_hours
-  ) => {
+  const valor = (id, value_km, value_base, value_helpers, value_hours) => {
     if (id == 3) {
       return distance < 6 ? 9 : distance * value_km;
     } else if (id == 1) {
-      return (
-        value_base +
-        distance * value_km +
-        service.helpers * value_helpers +
-        service.mounters * value_mounters
-      );
+      return value_base + distance * value_km + service.helpers * value_helpers;
     } else {
       return (
         value_hours * 3 +
         service.helpers * value_helpers +
-        service.mounters * value_mounters +
         service.hours * value_hours
       );
     }
   };
 
-  function handleService(id, servico, image, preco, unit, helpers, hours) {
-    dispatch(
-      setService({
-        ...service,
-        id,
-        servico,
-        image,
-        value: preco,
-        preco: unit,
-        helpers,
-        hours,
-      })
-    );
+  function updateService(
+    id,
+    servico,
+    image,
+    preco,
+    helpers,
+    hours,
+    value_helpers,
+    value_hours
+  ) {
+    setService({
+      ...service,
+      id,
+      servico,
+      image,
+      value: preco,
+      preco: preco,
+      helpers,
+      hours,
+      value_helpers,
+      value_hours,
+    });
 
     console.log(service);
   }
 
   return (
-    <div
-      className={cn("container", {
-        "card-open": suggestionsArray.isOpen,
-        "card-closed": !suggestionsArray.isOpen,
-      })}
-    >
+    <div className={"container"}>
       <div className={style["card-container"]}>
         <Item
           onClick={() =>
-            handleService(
+            updateService(
               config.id,
               config.service,
               config.image,
-              formatPrice(
-                valor(
-                  config.id,
-                  config.value_km,
-                  config.value_base,
-                  config.value_helpers,
-                  config.value_mounters,
-                  config.value_hours
-                )
-              ),
               valor(
                 config.id,
                 config.value_km,
                 config.value_base,
                 config.value_helpers,
-                config.value_mounters,
                 config.value_hours
               ),
               config.helpers,
-              config.hours
+              config.hours,
+              config.value_helpers,
+              config.value_hours
             )
           }
           className={style.card}
@@ -178,4 +145,4 @@ const Card = ({ config }) => {
   );
 };
 
-export default Card;
+export default CardService;

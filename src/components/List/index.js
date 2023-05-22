@@ -1,22 +1,10 @@
 import React from "react";
 import style from "./List.module.sass";
 import Icon from "../Icons";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setSuggestions,
-  setOrigin,
-  setDestination,
-  setMaps,
-} from "@/context/locationSlice";
-import { DataArrayOutlined } from "@mui/icons-material";
 
-export default function RenderRow({ suggestion, index, handleSetOrigem }) {
-  const dispatch = useDispatch();
-  const origin = useSelector((state) => state.location.origin);
-  const destination = useSelector((state) => state.location.destination);
-
+export default function RenderRow({ suggestion, handleSetOrigem }) {
   if (!suggestion) {
-    return null; // Don't render anything if suggestion is undefined or null
+    return null;
   }
 
   const neighborhood = suggestion.context?.find((c) =>
@@ -30,7 +18,7 @@ export default function RenderRow({ suggestion, index, handleSetOrigem }) {
   return (
     <div key={suggestion.id} className={style["col--search"]}>
       <div onClick={() => handleSetOrigem(suggestion)} className={style.search}>
-        <Icon name="seacheLocation" className={style["rectangle-1-2-1-2"]} />
+        <Icon name="searchLocation" className={style["rectangle-1-2-1-2"]} />
         <div className={style["frame-3"]}>
           <p className={style["text-1"]}>
             {suggestion.text || "Endereço inválido"}

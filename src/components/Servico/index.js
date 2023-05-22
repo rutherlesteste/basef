@@ -1,9 +1,9 @@
 import Adicionais from "./Adicionais";
 
-import Modal from "../../components/Modal";
+import Modal from "../Modal";
 import Informacoes from "./Informacoes";
 import Panel from "./Panel";
-import Schedule from "../../components/Schedule";
+import Schedule from "../Schedule";
 import styles from "./NewProduct.module.sass";
 import { useContext, useState } from "react";
 import useHandleConfig from "@/hooks/useConfig";

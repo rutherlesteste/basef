@@ -1,65 +1,88 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Home.module.sass";
-import Card from "@/components/Card";
-import Servico from "../servico";
-import Map from "./components/Map/index";
+import CardHome from "@/components/CardHome";
+import Map2 from "./components/Map2";
 import { useSelector, useDispatch } from "react-redux";
-import { setMaps } from "@/context/locationSlice";
+import { setService } from "@/context/serviceSlice";
 import useHandleConfig from "@/hooks/useConfig";
 import useHandleNotification from "@/hooks/useNotification";
 import useHandleService from "@/hooks/useService";
 import { toName } from "@/libs/utils";
-import CardForm from "../../components/CardForm";
 
-export default function index() {
+export default function Index() {
   const dispatch = useDispatch();
-  const maps = useSelector((state) => state.location.maps);
   const service = useSelector((state) => state.service.service);
 
   const { config } = useHandleConfig();
   const { notification } = useHandleNotification();
-  const { order, user } = useHandleService();
-  const [latitude, setLatitude] = useState();
+  const { user } = useHandleService();
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        if (!position?.coords?.latitude) return;
+    const getCurrentLocation = async () => {
+      try {
+        const position = await new Promise((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject)
+        );
 
-        const latitude = position?.coords?.latitude;
-        const longitude = position?.coords?.longitude;
+        const { latitude, longitude } = position.coords;
+
+        setLatitude(latitude);
+        setLongitude(longitude);
 
         dispatch(
-          setMaps({
-            lat: latitude,
-            lng: longitude,
-            status: "location",
+          setService({
+            ...service,
+            location: { longitude, latitude },
+            makers: [
+              {
+                coordinates: [longitude, latitude],
+                type: "position",
+              },
+            ],
           })
         );
-      });
+      } catch (error) {
+        console.error("Error getting current location:", error);
+      }
+    };
 
-      setLatitude(latitude);
-    }
-  }, [latitude]);
+    getCurrentLocation();
+  }, []);
+
+  const handleService = (data) => {
+  
+ 
+
+    dispatch(
+      setService({
+        ...service,
+        originPlace: data.originPlace,
+        origin: data.origin,
+        makers: location == 1 ? data.makers : newMakers,
+        destination: data.destination,
+        destinationPlace: data.destinationPlace
+        
+      })
+    );
+  };
 
   return (
-    <>
-      <div className={styles.home}>
-        <Map maps={maps} />
+    <div className={styles.home}>
+      <Map2 service={service} latitude={latitude} longitude={longitude} />
 
-        {!service.value && !service.id && (
-          <Card name={user && user?.name && toName(user?.name)}></Card>
-        )}
-
-        {service.value && (
-          <div style={{ padding: "1%", width: "100%" }}>
-            <CardForm
-              children={<Servico service={service} />}
-              service={service}
-            />
-          </div>
-        )}
+      <div className={styles.form}>
+        <CardHome
+          handleService={handleService}
+          service={service}
+          step={service.step}
+          config={config}
+          latitude={latitude}
+          longitude={longitude}
+          user={user && user.name && toName(user.name)}
+        />
       </div>
-    </>
+    </div>
   );
 }

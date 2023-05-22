@@ -1,22 +1,23 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
+
+
 import mapboxgl from "mapbox-gl";
 import { useSelector, useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
 import Image from "next/image";
-import { setMaps } from "@/context/locationSlice";
-import { setService } from "@/context/serviceSlice";
 
 import styles from "./Map.module.sass";
 import getDistance from "@/utils/getDistance";
 
-const Map = () => {
+const Map = ({ service, setService }) => {
   const mapRef = useRef(null);
   const dispatch = useDispatch();
   const [map, setMap] = useState(null);
   const maps = useSelector((state) => state.location.maps);
   const service = useSelector((state) => state.service.service);
   const [distance, setDistance] = useState();
+  const [load, setLoad] = useState(false);
 
   const pin = require("../pin.svg");
   const loc = require("../loc.svg");
@@ -33,9 +34,26 @@ const Map = () => {
     });
 
     setMap(map);
+
+    map.on("load", () => {
+      setLoad(true);
+    });
+
+    map.on("load", () => {
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+          showUserHeading: true,
+        })
+      );
+    });
   }, []);
 
   const makerLoc = (center) => {
+    
     if (marker) {
       marker.remove();
     }
@@ -168,9 +186,20 @@ const Map = () => {
 
         break;
     }
-  }, [maps]);
+  }, [maps, load, map]);
 
-  return <div className={styles.map} ref={mapRef}></div>;
+  return (
+    <>
+      <div className={!load ? styles.static : styles.static_false}>
+        <img
+          width={"100%"}
+          height={"100%"}
+          src="https://api.mapbox.com/styles/v1/rutherles/clhcoqnha008x01pecudrduj6/static/-40.3504,-20.3469,17,0/360x700@2x?access_token=pk.eyJ1IjoicnV0aGVybGVzIiwiYSI6ImNsaGF3bnJwMjBsY3kzZm4xcWYza3hka3cifQ.6Fz6MQnPiCgAUvTTyUd9mw"
+        />
+      </div>
+      <div className={load ? styles.map : styles.map_false} ref={mapRef}></div>
+    </>
+  );
 };
 
 export default React.memo(Map);

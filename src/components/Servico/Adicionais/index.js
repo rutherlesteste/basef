@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import Card from "../../../components/Cards";
-import Checkbox from "../../../components/Checkbox";
-import Dropdown from "../../../components/Dropdown";
-import Tooltip from "../../../components/Tooltip";
+import Card from "../../Cards";
+import Checkbox from "../../Checkbox";
+import Dropdown from "../../Dropdown";
+import Tooltip from "../../Tooltip";
 import cn from "classnames";
 import styles from "./CategoryAndAttibutes.module.sass";
 import { useSelector, useDispatch } from "react-redux";

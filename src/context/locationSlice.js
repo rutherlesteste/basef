@@ -12,6 +12,7 @@ const LocationSlice = createSlice({
       permission: false,
       place: "",
       locationType: "",
+      makers: false,
     },
     origin: {
       lat: 0,

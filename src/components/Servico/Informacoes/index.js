@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import Card from "../../../components/Cards";
-import Icon from "../../../components/Icon";
+import Card from "../../Cards";
+import Icon from "../../Icon";
 import Link from "next/link";
-import Switch from "../../../components/Switch";
-import TextInput from "../../../components/TextInput";
+import Switch from "../../Switch";
+import TextInput from "../../TextInput";
 import cn from "classnames";
 import styles from "./NameAndDescription.module.sass";
 import { useDispatch, useSelector } from "react-redux";

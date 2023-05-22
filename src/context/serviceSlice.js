@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+ 
 
 const ServiceSlice = createSlice({
   name: "service",
   initialState: {
     service: {
-      origin: 0,
-      destination: 0,
+      origin: false,
+      destination: false,
+      location: { latitude: -20.3468683, longitude: -40.3504468 },
       distance: 0,
       value: "",
       id: "",
@@ -13,6 +15,10 @@ const ServiceSlice = createSlice({
       helpers: 0,
       mounters: 0,
       hours: 0,
+      makers: false,
+      step: 1,
+      originPlace: "",
+      destinationPlace: "",
     },
   },
 

@@ -15,6 +15,7 @@ const Dropdown = ({
   tooltip,
   small,
   upBody,
+  onChange,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -60,6 +61,7 @@ const Dropdown = ({
               className={cn(styles.option, {
                 [styles.selectioned]: x === value,
               })}
+              onChange={onChange}
               onClick={() => handleClick(x, index)}
               key={index}
             >

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Home.module.sass";
-import Card from "@/components/Card";
+import Card from "@/components/CardHome";
 import Servico from "../servico";
 import Map from "./components/Map/index";
 import { useSelector, useDispatch } from "react-redux";

@@ -55,7 +55,8 @@ $bxs: inset 0 0 200px
 .dot
   +ab-center
   +box(60px, 60px)
-  z-index: 3
+  z-index: 3000
+  background: none
 
 .ping
   width: 40vmin
@@ -65,7 +66,25 @@ $bxs: inset 0 0 200px
   border: 4px solid rgba($lb, 0)
   border-radius: 50%
   animation: ping 3s ease infinite
-  z-index: 2
+  z-index: 0
+  div
+   +ab-center
+   +box(60px, 60px)
+   z-index: 3
+   background: #2196f305
+   border-radius: 50%
+
+  .dot
+   width: 9px 
+   height: 9px
+   border-radius: 50% 
+   +ab-center 
+   background-color: $p1
+   position: absolute
+   z-index: 4
+   
+  
+
 
 .loc
   width: 50px
