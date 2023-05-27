@@ -1,35 +1,67 @@
 import React from "react";
 import style from "./List.module.sass";
 import Icon from "../Icons";
+import { ListItem, ListItemLabel ,MenuAdapter,ARTWORK_SIZES} from "baseui/list";
+import { Check, ChevronRight } from "baseui/icon";
+import {StatefulMenu} from 'baseui/menu';
+import { PinDropTwoTone } from "@mui/icons-material";
 
-export default function RenderRow({ suggestion, handleSetOrigem }) {
+
+export default function RenderRow({ suggestion, handleSetOrigem ,index }) {
   if (!suggestion) {
     return null;
   }
 
-  const neighborhood = suggestion.context?.find((c) =>
-    c.id.includes("neighborhood")
-  )?.text;
-  const place = suggestion.context?.find((c) => c.id.includes("place"))?.text;
+
+
+  const neighborhood =
+    suggestion?.properties?.context?.neighborhood?.name
+      " " || "";
+  const place =
+    suggestion?.properties?.context?.place?.name + " " || "";
   const region =
-    suggestion.context?.find((c) => c.id.includes("region"))?.text ||
+    suggestion?.properties?.context?.region?.name ||
     "Endereço não encontrado";
 
   return (
-    <div key={suggestion.id} className={style["col--search"]}>
-      <div onClick={() => handleSetOrigem(suggestion)} className={style.search}>
-        <Icon name="searchLocation" className={style["rectangle-1-2-1-2"]} />
-        <div className={style["frame-3"]}>
-          <p className={style["text-1"]}>
-            {suggestion.text || "Endereço inválido"}
-          </p>
-          <p className={style["text-2"]} key={suggestion.id}>
-            {neighborhood ? neighborhood + ", " : ""}
-            {place ? place + ", " : ""}
-            {region}
-          </p>
-        </div>
-      </div>
+    <div key={index} className={style.search} onClick={()=> handleSetOrigem(suggestion)}>
+    
+    <MenuAdapter>
+    <ListItem
+   
+    artworkSize={ARTWORK_SIZES.LARGE}
+    
+
+
+      artwork={(props) =>  <PinDropTwoTone sx={{width: '25px', height:'25px'}} />}
+      endEnhancer={() => <ChevronRight />}
+
+      overrides={{
+        Content: {
+          style: ({ $theme }) => ({
+        
+
+            textAlign: "left"
+          })
+        },
+        
+      }}
+    >
+      <ListItemLabel
+        description={
+          neighborhood != "undefined "
+            ? neighborhood
+            : "" + place != "undefined "
+            ? place
+            : "" + region != "undefined "
+            ? region
+            : ""
+        }
+      >
+        {suggestion?.properties?.name || "Endereço inválido"}
+      </ListItemLabel>
+    </ListItem>
+    </MenuAdapter>
     </div>
   );
 }

@@ -1,34 +1,37 @@
-@import ../../styles/helpers.sass
-
-@keyframes slide-top
-  0%
-    transform: translateY(0)
-
-  100%
-    transform: translateY(-100px)
+.home
+  display: flex
+  justify-content: flex-end
+  flex-direction: column
+  width: 100%
+  height: 100%
 
 .map
   display: flex
-  width: 100%
   height: 100%
+
   justify-content: center
+  align-items: center
+  
+
+  width:100%
+
+  background-color: #f0f0f0
+
+
 
 .form
   overflow: hidden
- 
- 
-  position: absolute
-  bottom: 0
-  z-index: 100
-  left: 0
-  right: 0
-  
-
-.home
+  position: relative
   display: flex
-  flex-direction: column
-  justify-content: center
-
   width: 100%
-  height: 100%
+  height: 20%
+
+
+
+
+.map[data-isopen='true']
+ height: 40%
+
+.form[data-isopen='true']
+ flex: 60%
 

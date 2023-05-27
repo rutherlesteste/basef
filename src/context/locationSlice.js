@@ -13,6 +13,8 @@ const LocationSlice = createSlice({
       place: "",
       locationType: "",
       makers: false,
+      boundingBoxOrigin: null,
+      boundingBoxDestination: null,
     },
     origin: {
       lat: 0,

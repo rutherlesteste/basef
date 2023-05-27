@@ -1,88 +1,148 @@
-import React, { useEffect, useState } from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import styles from "./Home.module.sass";
 import CardHome from "@/components/CardHome";
 import Map2 from "./components/Map2";
-import { useSelector, useDispatch } from "react-redux";
-import { setService } from "@/context/serviceSlice";
+import {useSelector, useDispatch} from "react-redux";
+import {setService} from "@/context/serviceSlice";
 import useHandleConfig from "@/hooks/useConfig";
 import useHandleNotification from "@/hooks/useNotification";
 import useHandleService from "@/hooks/useService";
-import { toName } from "@/libs/utils";
-
+import {toName} from "@/libs/utils";
+import getMylocation from "@/utils/getMylocation";
 export default function Index() {
-  const dispatch = useDispatch();
-  const service = useSelector((state) => state.service.service);
+    const dispatch = useDispatch();
+    const service = useSelector((state) => state.service.service);
+    const {origin, destination, location, isOpen} = service;
+    const [height,setHeight]= useState(null)
 
-  const { config } = useHandleConfig();
-  const { notification } = useHandleNotification();
-  const { user } = useHandleService();
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+    const {config} = useHandleConfig();
+    const {notification} = useHandleNotification();
+    const {user} = useHandleService();
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+    const [routeGeoJSON, setRouteGeoJSON] = useState(null);
+    const [formHeight, setFormHeight] = useState(null);
+    const [back, setBack] = useState(true);
+    const [myLocation, setMyLocation] = useState("")
+    const divRef = useRef()
+    const [newLocation, setNewLocation] = useState(null)
 
-  useEffect(() => {
-    const getCurrentLocation = async () => {
-      try {
-        const position = await new Promise((resolve, reject) =>
-          navigator.geolocation.getCurrentPosition(resolve, reject)
-        );
+    useEffect(() => {
+  
+        if (divRef.current) {
+          console.log(divRef.current)
+          const { clientWidth, clientHeight } = divRef.current;
+          
+          setHeight(clientHeight)
+        }
+      }, [divRef,isOpen]);
 
-        const { latitude, longitude } = position.coords;
+    useEffect(() => {
+        const getCurrentLocation = async () => {
+            try {
+                const position = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
 
-        setLatitude(latitude);
-        setLongitude(longitude);
+                const {latitude, longitude} = position.coords;
 
-        dispatch(
-          setService({
-            ...service,
-            location: { longitude, latitude },
-            makers: [
-              {
-                coordinates: [longitude, latitude],
-                type: "position",
-              },
-            ],
-          })
-        );
-      } catch (error) {
-        console.error("Error getting current location:", error);
-      }
+                setLatitude(latitude);
+                setLongitude(longitude);
+
+
+                if (location) 
+                    return;
+                
+
+                dispatch(setService({
+                    ... service,
+                    location: [
+                        longitude, latitude
+                    ],
+                    latitude,
+                    longitude
+
+
+                }));
+
+
+            } catch (error) {
+                console.error("Error getting current location:", error);
+            }
+        };
+
+        getCurrentLocation();
+    }, [dispatch, service, latitude]);
+
+
+    useEffect(() => {
+
+        if (!longitude || myLocation.length > 0) 
+            return;
+        
+
+
+        const getMyloc = async () => {
+            const myloc = await getMylocation(latitude, longitude)
+
+            if (! myloc) 
+                return;
+            
+
+            setMyLocation(myloc[0].properties.name)
+
+            return myloc
+
+        } 
+        getMyloc()
+
+    }, [myLocation, latitude])
+
+
+    const handleService = (data) => {
+        dispatch(setService({
+            ... service,
+            originPlace: data.originPlace,
+            origin: data.origin,
+            destination: data.destination,
+            destinationPlace: data.destinationPlace,
+            latitude: data.latitude,
+            longitude: data.longitude,
+            zoom: 15,
+            step: data.step,
+            distance: 0,
+            isOpen: data.isOpen
+
+        }));
+
     };
 
-    getCurrentLocation();
-  }, []);
 
-  const handleService = (data) => {
-  
- 
-
-    dispatch(
-      setService({
-        ...service,
-        originPlace: data.originPlace,
-        origin: data.origin,
-        makers: location == 1 ? data.makers : newMakers,
-        destination: data.destination,
-        destinationPlace: data.destinationPlace
-        
-      })
+    return (
+        <div className={
+            styles.home
+        }>
+            <div ref={divRef} data-isopen={isOpen}
+                className={
+                    styles.map
+            }>
+             <Map2 setNewLocation={setNewLocation} height={height} service={service}
+                    formHeight={formHeight}/>
+            </div>
+            <div data-isopen={isOpen} className={
+                styles.form
+            }>
+                <CardHome handleService={handleService}
+                    service={service}
+                    step={
+                        service.step
+                    }
+                    myLocation={myLocation}
+                    config={config}
+                    latitude={latitude}
+                    longitude={longitude}
+                    user={
+                        user && user.name && toName(user.name)
+                    }/>
+            </div>
+        </div>
     );
-  };
-
-  return (
-    <div className={styles.home}>
-      <Map2 service={service} latitude={latitude} longitude={longitude} />
-
-      <div className={styles.form}>
-        <CardHome
-          handleService={handleService}
-          service={service}
-          step={service.step}
-          config={config}
-          latitude={latitude}
-          longitude={longitude}
-          user={user && user.name && toName(user.name)}
-        />
-      </div>
-    </div>
-  );
 }

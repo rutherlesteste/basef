@@ -1,0 +1,63 @@
+@import ../../styles/helpers
+.tabs
+  display: flex
+  position: relative
+  background: $n
+  box-shadow: -7px -5px 30px #bebebe, -15px -15px 30px #ffffff
+  padding: 0.75rem
+  border-radius: 99px
+
+  *
+    z-index: 2
+
+.container input[type="radio"]
+  display: none
+
+.tab
+  display: flex
+  align-items: center
+  justify-content: center
+  height: 60px
+  width: calc( 100% / 3 - 10px  )
+  font-size: 20px
+  color: black
+  font-weight: 500
+  border-radius: 99px
+  cursor: pointer
+  transition: color 0.15s ease-in
+
+
+
+.container 
+  width: 80%
+  input
+  &[type="radio"]:checked + label
+    color: #185ee0
+
+    > .notification
+      background-color: #185ee0
+      color: #fff
+      margin: 0px
+
+  &[id="radio-1"]:checked ~ .glider
+    transform: translateX(0)
+
+  &[id="radio-2"]:checked ~ .glider
+    transform: translateX(100%)
+
+  &[id="radio-3"]:checked ~ .glider
+    transform: translateX(200%)
+
+.glider
+  position: absolute
+  display: flex
+  height: 60px
+  width: calc( 100% / 3 - 15px  )
+  background-color: #e6eef9
+  z-index: 1
+  border-radius: 99px
+  transition: 0.25s ease-out
+
+@media (max-width: 700px)
+  .tabs
+    transform: scale(0.6)

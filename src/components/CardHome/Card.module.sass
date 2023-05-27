@@ -1,200 +1,102 @@
 @import ../../styles/helpers.sass
 .card-container
-  display: flex
-  flex-direction: column
-  justify-content: flex-start
-  align-items: flex-start
-
   width: 100%
-  background-color: $p1
+  height: auto
+  position: relative
+  border-radius: 10px
 
-  box-sizing: border-box
-  border-radius: 32px
+  overflow: hidden
+
+.divider
+  background-color: #D5DDE0
+  height: 5px
+  display: flex
+  width: 50px
+  align-self: center
+  margin: 2%
+  border-radius: 10%
+  box-shadow: 0px 4px 15px rgb(202 202 202 / 30%)
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1)
+
 
 .card
-  border-radius: 32px
-  display: flex
-  flex-direction: column
-  justify-content: flex-start
-  align-items: flex-start
-  background-color: #ffffff
   width: 100%
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.212)
+  background: #fff
+  display: flex
+  border-radius: 20px
+  justify-content: center
+  position: relative
+  min-height: 20vh
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1)
 
-  &--header
+ 
+
+
+
+
+  .front-content
+    width: 100%
+    height: 100%
     display: flex
-    flex-direction: row
+    align-items: center
     justify-content: center
-    align-items: center
-    padding: 5px
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1)
 
-    gap: 2px
+    p
+      font-size: 32px
+      font-weight: 700
+      opacity: 1
+      background: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100%)
+      background-clip: text
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1)
+
+  .content
+    position: absolute
+    top: 0
+    left: 0
     width: 100%
-
-.media
-  display: flex
-  flex-direction: row
-  justify-content: flex-start
-  align-items: center
-  gap: 1px
-  width: 100%
-
-  &--body
+    height: 100%
     display: flex
-    flex-direction: row
-    justify-content: flex-start
+    flex-direction: column
     align-items: center
-    gap: 16px
+    justify-content: center
+    text-align: center
+    gap: 10px
+    background: $n
+    color: #e8e8e8
+    line-height: 1.5
+    border-radius: 5px
+    padding: 3%
 
-.avatar
-  display: flex
-  flex-direction: row
-  justify-content: flex-start
-  align-items: center
-
-.img-1
-  border-radius: 80px
-  height: 60px
-  width: 60px
-
-.media--content
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: flex-start
-  gap: 4.8px
-
-.text-2
-  text-align: left
-  vertical-align: top
-  font-size: 20px
-  font-family: Roboto
-  line-height: auto
-  color: #000000
-
-.text-3
-  text-align: left
-  vertical-align: top
-  font-size: 14px
-  font-family: Roboto
-  letter-spacing: .8px
-  line-height: 40.8px
-  color: #78858f
-
-.message
-
-  display: flex
-  flex-direction: row
-  justify-content: center
-  align-items: center
-  gap: 1.6px
-
-  svg
-    width: 20px
-    color: $n4
-
-.icon--message
-  height: 15px
-  width: 15px
-
-.input--origem
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: center
-  padding-block-end: 17px
-  padding-block-start: 12px
-  width: 100%
-
-.address--conteiner-origem
-  height: auto
-  width: 90%
-  padding: 15px
-  display: flex
-  flex-direction: row
-  justify-content: flex-start
-  align-items: center
-  gap: 10%
-  background: #FFFFFF
-  box-shadow: 0px 4px 15px rgb(202 202 202 / 30%)
-  border-radius: 15px
-
-.svgorigin--destino
-  height: 63px
-  width: 7px
-
-.address
-  width: 80%
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: flex-start
-  gap: 3px
-  input
-    width: 100%
-    font-family: Roboto
-    font-style: normal
-    font-weight: 400
-    font-size: 15px
-    line-height: 136%
-
-    color: #3E4958
-
-.location-list
-  display: flex
-  flex-direction: column
-  justify-content: flex-start
-  align-items: flex-start
-  gap: 10px
-  width: 100%
-  padding-block-start: 2%
-
-.row-list
-  display: flex
-  flex-direction: row
-  justify-content: stretch
-  align-items: center
-
-  padding: 10px
-  gap: 10px
-
-  width: 100%
+    transform: translateY(96%)
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1)
 
 
+.card[data-isopen="true"]
 
-.place-svg
-  height: 30px
-  width: 30px
-  color: $n1
-  svg
-    height: 30px
-    width: 30px
-    color: $n1
+  height: 60vh
+  .content
+   transform: translateY(0)
 
-.col-list
-  display: flex
-  flex-direction: column
-  justify-content: flex-start
-  align-items: flex-start
+   .front-content
+      transform: translateY(-30%)
 
-.text-1-list
-  text-align: left
-  vertical-align: start
-  font-size: 16px
-  font-family: Roboto
-  line-height: 20px
-  font-weight: 500
-  color: $n1
-
-.text-2-list
-  text-align: left
-  vertical-align: top
-  font-size: 14px
-  font-family: Roboto
-  line-height: 20px
-  font-weight: 500
-  color: $n2
+      p
+        opacity: 0
+  &::before
+    height: 40vh
 
 
-#rig
-   align-self: center
-   justify-self: center
+.heading
+      width: 100%
+      display: flex
+      flex-direction: row
+      justify-content: space-around
+  
+      svg
+      font-size: 60px
+      color: $n4
+  

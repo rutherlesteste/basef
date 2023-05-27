@@ -2,6 +2,7 @@ import { formatDistance } from "date-fns";
 import { MAP_BOX_TOKEN } from "@/constants/keys";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { distance } from "@turf/turf";
 
 const getDistance = async (origin, destination) => {
   let route = [];
@@ -18,6 +19,20 @@ const getDistance = async (origin, destination) => {
       const { distance, duration } = route[0];
 
       const distancia = Math.round(parseInt(distance) / 1000);
+
+      const newRouteGeoJSON = {
+        type: "Feature",
+        distance:distancia,
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: route[0].geometry.coordinates,
+        },
+      };
+    
+      return newRouteGeoJSON;
+
+      
     } else {
       console.log("Nenhuma rota encontrada.");
     }
@@ -25,7 +40,7 @@ const getDistance = async (origin, destination) => {
     console.log("Ocorreu um erro:", error.message);
   }
 
-  return route;
+  
 };
 
 export default getDistance;

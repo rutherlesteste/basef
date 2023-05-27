@@ -1,32 +1,53 @@
-import React from "react";
-import styles from "./Card.module.sass";
-import { IconButton } from "@mui/material";
-import { LocationDisabledOutlined } from "@mui/icons-material";
+import React from 'react'
+import styles from './CardHeader.module.sass'
+import Image from 'next/image'
+import { NotificationAddTwoTone } from '@mui/icons-material'
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import InputOrigem from './input';
+import { debounce } from "lodash";
 import cn from "classnames";
 
-export default function CadTop() {
+
+export default function CadTop(props) {
+  const {avatar,myLocation,handleOpen} = props
   return (
-    <div className={styles.top_card2}>
-      <div className={styles.header2}>
-        <div className={styles.icon2}>
-          <IconButton color="#ff" sx={{ width: 30, height: 30, color: "#fff" }}>
-            <LocationDisabledOutlined
-              color="#ff"
-              sx={{ width: 30, height: 30, color: "#fff" }}
-            />
-          </IconButton>
+ 
+    <div id="card-header" className={styles["card-header"]}>
+    <div className={styles.col}>    
+    <div className={styles.divider} />
+    <div id="media" className={styles["media"]}>
+      <div id="media-body" className={styles["media-body"]}>
+        <div id="avatar" className={styles["avatar"]}>
+          <Image
+            id="avatar2"
+            className={styles["avatar2"]}
+            src={avatar}
+           
+          />
         </div>
-
-        <div className={styles.title2}>Por favor habilite a Localização</div>
+        <div id="media-content" className={styles["media-content"]}>
+          <div id="frankesteban" className={styles["frankesteban"]}>
+            Alexandro Vargas
+          </div>
+          <div id="webdevelopment" className={styles["webdevelopment"]}>
+            Ayer 23:50
+          </div>
+        </div>
+      </div>
+      <div id="media-option" className={styles["media-option"]}>
+      <NotificationsNoneOutlinedIcon className={styles["carbon:overflow-menu-vertical"]}/>
       </div>
 
-      <div className={styles.box_card_content}>
-        <div className={styles.title2}>
-          <button className={cn("button-white", styles.button2)}>
-            Ou inserira manualmente
-          </button>
-        </div>
-      </div>
+
     </div>
-  );
+
+    <InputOrigem handleOpen={handleOpen} myLocation={myLocation} />
+    
+    
+    </div>
+
+  </div>
+  
+
+  )
 }

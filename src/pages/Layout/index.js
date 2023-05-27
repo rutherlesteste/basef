@@ -5,7 +5,8 @@ import styles from "./Layout.module.sass";
 export default function Layout({ children }) {
   return (
     <>
-      <Header />
+    <Header></Header>
+
       <div className={styles.container}>{children}</div>
     </>
   );
