@@ -7,7 +7,6 @@ import ReactMapGL, {
   Source,
   Layer,
 } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import {
   FloatingMarker,
   FLOATING_MARKER_SIZES,
@@ -227,7 +226,6 @@ useEffect(() => {
       height="100%"
       mapStyle="mapbox://styles/rutherles/clhcoqnha008x01pecudrduj6"
       onViewportChange={setNewUserLocation}
-      mapboxApiAccessToken="pk.eyJ1IjocicnJ1dGhlcmxlcyIsImEiOiJjbGhhd25ycDIwbGN5M2ZuMXFmM2t5a2t3Iiwib3BlbmJxX2FsY29zcyI6IjBNSnVOUW5QaUNnQVV2VFR5VWQ5bXciLCJpYXQiOjE2MjI3MzEzNjIsImV4cCI6MTYyMzQ4MzU2Mn0.4USyYX-Vi6CndADnbsLxug"
       transitionDuration={200}
     >
       <GeolocateControl />

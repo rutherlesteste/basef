@@ -24,8 +24,10 @@ const CardHome = ({
     user,
     latitude,
     longitude
+
 }) => {
     const [suggestionsArray, setSuggestionsArray] = useState({suggestions: [], isOpen: false, input: ""});
+    const {step , location , origin , destination , destinationPlace, originPlace } = service
 
 
     const Item = styled(Paper)(({theme}) => ({
@@ -47,12 +49,11 @@ const CardHome = ({
     const [locationInput, setLocationInput] = useState({
         origin: "",
         destination: "",
-        valueOrigin: "",
-        valueDestination: "",
+        valueOrigin: originPlace,
+        valueDestination: destinationPlace,
         inputType: ""
     });
 
-    const {step , location , origin , destination } = service
 
     const lat = location ? location[1] : null
     const lng = location ? location[0] : null
@@ -94,7 +95,7 @@ const CardHome = ({
             });
 
             handleService({
-                ...service,
+              
                 originPlace: data.properties.name,
                 origin: [
                      data.properties.coordinates.longitude,
@@ -126,7 +127,7 @@ const CardHome = ({
             });
 
             handleService({
-                ...service,
+           
                 destinationPlace: data.properties.name,
                 destination: [
                     data.properties.coordinates.longitude,
@@ -165,7 +166,7 @@ const CardHome = ({
             });
 
             handleService({
-                ...service,
+                
 
                 origin: null
             });
@@ -175,7 +176,7 @@ const CardHome = ({
                 valueDestination: ""
             });
             handleService({
-                ...service,
+               
                 destination: null
             });
         }

@@ -1,17 +1,19 @@
-@import ../../styles/helpers
 .tabs
   display: flex
   position: relative
-  background: $n
-  box-shadow: -7px -5px 30px #bebebe, -15px -15px 30px #ffffff
+  background-color: #fff
+  box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15)
   padding: 0.75rem
   border-radius: 99px
 
   *
     z-index: 2
 
-.container input[type="radio"]
+.container
+ width: 100%
+ input[type="radio"]
   display: none
+
 
 .tab
   display: flex
@@ -26,27 +28,38 @@
   cursor: pointer
   transition: color 0.15s ease-in
 
+.notification
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 5%
+  height: auto
+  position: absolute
+  top: 3%
+  left: 23%
+  font-size: 11px
+  margin-left: 0.75rem
+  border-radius: 50%
+  margin: 0px
+  background-color: #e6eef9
+  transition: 0.15s ease-in
 
+.container input[type="radio"]:checked + label
+  color: #185ee0
 
-.container 
-  width: 80%
-  input
-  &[type="radio"]:checked + label
-    color: #185ee0
+.container input[type="radio"]:checked + label > .notification
+  background-color: #185ee0
+  color: #fff
+  margin: 0px
 
-    > .notification
-      background-color: #185ee0
-      color: #fff
-      margin: 0px
+.container input[id="1"]:checked ~ .glider
+  transform: translateX(0)
 
-  &[id="radio-1"]:checked ~ .glider
-    transform: translateX(0)
+.container input[id="2"]:checked ~ .glider
+  transform: translateX(100%)
 
-  &[id="radio-2"]:checked ~ .glider
-    transform: translateX(100%)
-
-  &[id="radio-3"]:checked ~ .glider
-    transform: translateX(200%)
+.container input[id="3"]:checked ~ .glider
+  transform: translateX(200%)
 
 .glider
   position: absolute

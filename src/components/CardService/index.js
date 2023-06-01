@@ -1,33 +1,21 @@
 import * as React from "react";
-import {
-  MessageCard,
-  BUTTON_KIND,
-  BACKGROUND_COLOR_TYPE,
-  IMAGE_LAYOUT
-} from "baseui/message-card";
-import AddRoadTwoToneIcon from "@mui/icons-material/AddRoadTwoTone";
-import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import AccessTimeTwoToneIcon from "@mui/icons-material/AccessTimeTwoTone";
-import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
-import style from "./Card.module.sass";
-import { Divider } from "@mui/material";
+import styles from "./Card.module.sass";
 import { formatPrice } from "@/utils";
+import { createTheme } from "@mui/material/styles";
+import Avatar from "../Avatar";
+import { StatelessAccordion, Panel } from "baseui/accordion";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import HailIcon from "@mui/icons-material/Hail";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Button } from "@mui/material";
+export default (props) => {
 
+const { config, handleService, service } = props
 
-export default ({ config, handleService, distance, service }) => {
-
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    justifyContent: "space-around",
-    alignItems: "center",
-  }));
-
+  const { distance , step} = service;
 
   const valor = (id, value_km, value_base, value_helpers, value_hours) => {
     if (id == 3) {
@@ -35,30 +23,29 @@ export default ({ config, handleService, distance, service }) => {
     } else if (id == 1) {
       return value_base + distance * value_km + 1 * value_helpers;
     } else {
-      return (
-        value_hours * 3 +
-        1 * value_helpers +
-        1 * value_hours
-      );
+      return value_hours * 3 + 1 * value_helpers + 1 * value_hours;
     }
   };
 
+  console.log(service);
 
   function updateService(
     id,
     servico,
     image,
+    image2,
     preco,
     helpers,
     hours,
     value_helpers,
     value_hours
   ) {
+
     handleService({
-      ...service,
       id,
       servico,
       image,
+      image2,
       value: preco,
       preco: preco,
       helpers,
@@ -67,46 +54,127 @@ export default ({ config, handleService, distance, service }) => {
       value_hours,
     });
 
-    console.log(service);
   }
+
+  const [expanded, setExpanded] = React.useState([1, 2, 3]);
+console.log(expanded[0])
   return (
+    <>
+      <div className={styles["card-container"]}>
+        {config.map((item, index) => (
+          <div  key={index} className={styles.card}>
+            <Avatar src={item.image2} expanded={expanded[0] == item.id ? '#276EF1' : "#6F767E" } />
+            <div onClick={() =>
+            updateService(
+              item.id,
+              item.service,
+              item.image,
+              item.image2,
+              valor(
+                item.id,
+                item.value_km,
+                item.value_base,
+                item.value_helpers,
+                item.value_hours
+              ),
+              item.helpers,
+              item.hours,
+              item.value_helpers,
+              item.value_hours
+            )
+          } className={styles.coll1}>
+              <div className={styles.row}>
+                <h3>{item.description} </h3>
+                <h3 style={{ fontSize: 14 }}>
+                  {formatPrice(
+                    valor(
+                      item.id,
+                      item.value_km,
+                      item.value_base,
+                      item.value_helpers,
+                      item.value_mounters,
+                      item.value_hours
+                    )
+                  )}
+                </h3>
+              </div>
+              <div className={styles.row}>
+                <StatelessAccordion
+                  expanded={expanded}
+                  onChange={({ key, expanded }) => {
+                    console.log(key);
+                    setExpanded(expanded);
+                  }}
+                  accordion
+                  overrides={{
+                    Header: {
+                      style: ({ $theme }) => ({
+                        fontSize: "12px",
+                        fontFamily: "Roboto",
+                        fontFstyle: "normal",
+                        fontWeight: 400,
+                        lineHeight: "12px",
+                        paddingTop: "5px",
+                        paddingLeft: "0px",
+                      }),
+                    },
+                    Content: {
+                      style: ({ $theme }) => ({
+                        padding: "0px",
+                      }),
+                    },
+                  }}
+                >
 
-    <div className={"container"}>
-    <div className={style["card-container"]}>
+                  <Panel key={item.id} title={item.detalhes}>
+                    {item.id == 2 && (
+<>
+                      <Stack direction="row" spacing={1}>
+                        <Chip
+                          icon={<AccessTimeIcon />}
+                          size="small"
+                          label="5h"
+                          variant="outlined"
+                        />
+                        <Chip
+                          icon={<HailIcon />}
+                          size="small"
+                          label="1 Ajudante"
+                          variant="outlined"
+                        />
+                      </Stack>
 
-
-
-    <MessageCard
-            heading="Looking for adventure?"
-            paragraph="Nam vitae maximus nibh."
-            buttonLabel="Take me there"
-    
-      onClick={() => alert('Clicked 🙂')}
-      image={{
-        src: config.image,
-        layout: IMAGE_LAYOUT.trailing,
-
-        ariaLabel:
-          'A deconstructed hamburger being literally thrown together',
-      }}
-
-      backgroundColorType={BACKGROUND_COLOR_TYPE.light}
-
-      overrides={{
-        Image: {
-          style: ({ $theme }) => ({
-            outline: `${$theme.colors.warning600} solid`,
-            backgroundColor: $theme.colors.warning600,
-            
-          })
-        }
-      }}
-    />
-
-
-
-
+<div
+style={{
+  fontSize: 10,
+  paddingBlock: 5,
+  marginBlock: "1%",
+}}
+>
+<span
+  style={{
+    fontSize: 10,
+    paddingBlock: 5,
+    marginBlock: "1%",
+    display: "flex",
+    alignSelf: "flex-start",
+  }}
+>
+  personalizável de acordo com suas necessidades
+</span>
+</div>
+</>           )}
+                
+                  </Panel>
+                </StatelessAccordion>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+<div className={styles.button}>
+     {expanded.length == 1 &&  step == 2 ?(<Button  size="large" sx={{width:'80%'}} variant="contained">Solicitar {service.servico}</Button>) : <span className="title-sub">Escolha o serviço </span>}
     </div>
-    </div>
+    </>
   );
-}
+};

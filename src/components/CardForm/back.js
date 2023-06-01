@@ -126,8 +126,8 @@ export default function (props){
         </div>
         <label className={cn(styles['price'], styles.small)} >$23.99</label>
       </div>
-            </div>
-          </div>
+    </div>
+  </div>
   <div className={cn(styles['card'], styles.coupons)} >
     <label className={styles.title}>Apply coupons</label>
     <form className={styles.form}>

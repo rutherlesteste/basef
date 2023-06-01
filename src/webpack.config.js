@@ -8,6 +8,17 @@ module.exports = {
           ? process.env.MapboxAccessTokenProd
           : process.env.MapboxAccessTokenDev
       ),
-    }),
+
+      rules: [
+        {
+          test: /\.css$/i,
+          use: ["style-loader", "css-loader"],
+        }
+      ],
+    }
+    
+    
+    ),
+  
   ],
 };

@@ -12,8 +12,8 @@ import getMylocation from "@/utils/getMylocation";
 export default function Index() {
     const dispatch = useDispatch();
     const service = useSelector((state) => state.service.service);
-    const {origin, destination, location, isOpen} = service;
-    const [height,setHeight]= useState(null)
+    const {origin, destination, location, isOpen,step} = service;
+    const [cardHeight,setCardHeight]= useState(null)
 
     const {config} = useHandleConfig();
     const {notification} = useHandleNotification();
@@ -33,7 +33,7 @@ export default function Index() {
           console.log(divRef.current)
           const { clientWidth, clientHeight } = divRef.current;
           
-          setHeight(clientHeight)
+          setCardHeight(clientHeight)
         }
       }, [divRef,isOpen]);
 
@@ -97,41 +97,29 @@ export default function Index() {
     }, [myLocation, latitude])
 
 
-    const handleService = (data) => {
+    const handleService = (dados) => {
+        console.log(dados)
         dispatch(setService({
-            ... service,
-            originPlace: data.originPlace,
-            origin: data.origin,
-            destination: data.destination,
-            destinationPlace: data.destinationPlace,
-            latitude: data.latitude,
-            longitude: data.longitude,
-            zoom: 15,
-            step: data.step,
-            distance: 0,
-            isOpen: data.isOpen
-
-        }));
+            ...service,
+            ...dados
+          }));
 
     };
 
 
     return (
-        <div className={
+        <div    className={
             styles.home
+          
         }>
-            <div ref={divRef} data-isopen={isOpen}
-                className={
-                    styles.map
-            }>
-             <Map2 setNewLocation={setNewLocation} height={height} service={service}
-                    formHeight={formHeight}/>
-            </div>
-            <div data-isopen={isOpen} className={
-                styles.form
-            }>
-                <CardHome handleService={handleService}
-                    service={service}
+            <div className={styles.map}>
+<Map2
+cardHeight={cardHeight}
+            setNewLocation={setNewLocation}
+            service={service}
+            formHeight={formHeight}
+            handleService={handleService}
+           
                     step={
                         service.step
                     }
@@ -139,10 +127,35 @@ export default function Index() {
                     config={config}
                     latitude={latitude}
                     longitude={longitude}
+               
+            
                     user={
                         user && user.name && toName(user.name)
-                    }/>
+                    }
+          />
+            
+</div>
+
+<div ref={divRef} data-isopen={isOpen} className={styles.card}>
+
+<CardHome handleService={handleService}
+  service={service}
+  step={
+    step
+  }
+  myLocation={myLocation}
+  config={config}
+  latitude={latitude}
+  longitude={longitude}
+  setNewLocation={setNewLocation}
+  formHeight={formHeight}
+  user={
+    user
+  } />
+  </div>
+        
+           
             </div>
-        </div>
+    
     );
 }

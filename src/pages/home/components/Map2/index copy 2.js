@@ -10,8 +10,6 @@ import { WebMercatorViewport } from "viewport-mercator-project";
 import { setService } from "@/context/serviceSlice";
 import CardHome from "@/components/CardHome"
 import { useDispatch } from "react-redux";
-import 'mapbox-gl/dist/mapbox-gl.css';
-
 import ReactMapGL, {
   Marker,
   GeolocateControl,
@@ -31,7 +29,6 @@ import {
 } from "baseui/map-marker";
 import { toName } from "@/libs/utils";
 import getDistance from "@/utils/getDistance";
-import { parseInt } from "lodash";
 
 const layerStyle = {
   id: "route",
@@ -56,12 +53,11 @@ const layerStyle = {
   },
 };
 
-function Map2({ handleService, service, setNewLocation,
+function Map2({ handleService, service, height, setNewLocation,
 
   step,
   myLocation,
   config,
-  cardHeight,
 
 
 
@@ -71,9 +67,6 @@ function Map2({ handleService, service, setNewLocation,
   const dispatch = useDispatch();
   const mapRef = useRef(null);
   const makerRef = useRef()
-  const [height,setHeight]= useState(null)
-  const [width,setWidth]= useState(null)
-
   const {
     origin,
     destination,
@@ -85,7 +78,7 @@ function Map2({ handleService, service, setNewLocation,
     isOpen,
 
   } = service;
-const divRef = useRef()
+
   const [userLocation, setUserLocation] = useState({
     latitude: 37.768495131168336,
     longitude: -122.38856031220648,
@@ -104,18 +97,19 @@ const divRef = useRef()
 
   useEffect(()=>{
 
- 
-    if (divRef.current) {
-      console.log(divRef.current)
-      const { clientWidth, clientHeight } = divRef.current;
-      setHeight(clientHeight)
-      setWidth(clientWidth)
-      
-      console.log(window.innerHeight - cardHeight)
-    }
-  
+    if (isOpen) {
+      setViewport({
+        ...viewport,
+        height:'40vh'
+      })
+    }else(setViewport({
+      ...viewport,
+      height:'100vh'
+    }))
 
-  },[isOpen, divRef])
+    console.log(viewport)
+
+  },[isOpen])
 
 
   const setNewUserLocation = (newLocation) => {
@@ -146,7 +140,6 @@ const divRef = useRef()
         longitude: origin[0],
         latitude: origin[1],
         zoom: 17,
-
         
    
 
@@ -174,16 +167,16 @@ const divRef = useRef()
       const tamanho = coordinates.length - 1;
       const minCord = coordinates[0];
       const maxCord = coordinates[tamanho];
-      const padding = 5;
+      const padding = 100;
 
       const viewport = {
 
         longitude: (minCord[0] + maxCord[0]) / 2,
         latitude: (minCord[1] + maxCord[1]) / 2,
-        zoom: 1,
+        zoom: 10,
 
-        width: width - 50,
-        height: window.innerHeight - cardHeight - 50 ,
+        width: window.innerWidth,
+        height: window.innerHeight,
       };
 
       const { longitude, latitude, zoom } = new WebMercatorViewport(
@@ -201,8 +194,6 @@ const divRef = useRef()
         longitude,
         latitude,
         zoom,
-    
-  
 
       });
     }
@@ -211,7 +202,7 @@ const divRef = useRef()
   const renderMarkers = useMemo(() => {
 
     return (
-      < div >
+      <>
         {location && !origin && (
           <Marker
 
@@ -284,21 +275,21 @@ const divRef = useRef()
             </Marker>
           </>
         )}
-      </div>
+      </>
     );
   }, [destination, origin, location]);
 
   return (
-    <div className={styles.map} ref={divRef} >
+    <div style={{height:'100%',width:'100%',display:'flex',flexDirection:'column'}}>
       <Map
         {...viewport}
 
 
-
+       onResize={()=>alert('zoom')}
         
     
 
-   
+      pitch={40}
      
 
 
@@ -320,7 +311,23 @@ const divRef = useRef()
         )}
       </Map >
 
- 
+      <div style={{height: !isOpen ? '25vh': '100%'}}>
+
+      <CardHome handleService={handleService}
+        service={service}
+        step={
+          step
+        }
+        myLocation={myLocation}
+        config={config}
+        latitude={latitude}
+        longitude={longitude}
+        setNewLocation={setNewLocation} height={height}
+        formHeight={formHeight}
+        user={
+          user
+        } />
+        </div>
     </div>
   )
 
