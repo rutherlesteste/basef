@@ -17,17 +17,13 @@ const avatar = require("../../images/avatar.jpg");
 import Modal from "./modal";
 import {Tabs, Tab, FILL} from "baseui/tabs-motion";
 import CardHeader from "./CadTop";
-const CardHome = ({
-    handleService,
-    service,
-    config,
-    user,
-    latitude,
-    longitude
+const CardHome = (props) => {
+    const {handleService,service,handleOpen,handleClose,appSlice ,app, handleApp} = props
 
-}) => {
+    
+
     const [suggestionsArray, setSuggestionsArray] = useState({suggestions: [], isOpen: false, input: ""});
-    const {step , location , origin , destination , destinationPlace, originPlace } = service
+    const { location , origin , destination , destinationPlace, originPlace} = service
 
 
     const Item = styled(Paper)(({theme}) => ({
@@ -188,7 +184,7 @@ const CardHome = ({
         }>
 
 
-            <div className={
+            <div data-isopen={app?.isOpen} className={
                 style["input--origem"]
             }>
 
@@ -213,6 +209,7 @@ const CardHome = ({
                             <input className={
                                     style["input--address"]
                                 }
+                                onClick={()=>handleOpen()}
                                 placeholder="De Onde?"
                                 onChange={
                                     (e) => handleInputChange("origin", e.target.value)
@@ -271,12 +268,14 @@ const CardHome = ({
 
             {
             suggestionsArray.isOpen && suggestionsArray.suggestions.map((suggestion, index) => (
+                <div key={index} data-isopen={app.isOpen} className={style.list}>
                 <List handleSetOrigem={handleSetOrigem}
                     suggestion={suggestion}
                     index={index}
                     input={
                         suggestionsArray.input
                     }/>
+                    </div>
             ))
         } </div>
 

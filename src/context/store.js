@@ -1,13 +1,13 @@
 "use client";
 
 import { configureStore } from "@reduxjs/toolkit";
-import LocationSlice from "./locationSlice";
+import AppSlice from "./appSlice";
 import ServiceSlice from "./serviceSlice";
 
 
 export default configureStore({
   reducer: {
-    location: LocationSlice,
-    service: ServiceSlice,
+    app: AppSlice,
+    service: ServiceSlice
   },
 });

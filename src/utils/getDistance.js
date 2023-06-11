@@ -24,6 +24,7 @@ const getDistance = async (origin, destination) => {
         type: "Feature",
         distance:distancia,
         properties: {},
+        lineMetrics: true,
         geometry: {
           type: "LineString",
           coordinates: route[0].geometry.coordinates,

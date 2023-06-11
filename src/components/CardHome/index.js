@@ -1,22 +1,29 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./Card.module.sass";
 import CadTop from "./CadTop";
 const avatar = require("../../images/avatar.jpg");
+import LaunchIcon from '@mui/icons-material/Launch';
 import CardService from "../CardService";
 import List from "../List";
 import Servico from "../Servico";
 import Tables from "@/components/Tables";
 import Icon from "../Icon";
-import { CancelOutlined, CloseFullscreen } from "@mui/icons-material";
+import { CancelOutlined, CloseFullscreen, CloseRounded } from "@mui/icons-material";
 import OriginDestination from "./OriginDestination";
 import CancelSharpIcon from "@mui/icons-material/CancelSharp";
 import { IconButton } from "@mui/material";
 import Map2 from "@/pages/home/components/Map2/index copy";
 import CardForm from "../CardForm";
-export default function index({
+import Imput from './input'
+//import Service from '../CardService/Service'
+import CardNotification from '../CardNotification'
+import Service from '../Services'
+
+export default function Index({
   handleService,
   service,
   config,
+  app,
   user,
   latitude,
   longitude,
@@ -24,6 +31,10 @@ export default function index({
   setNewLocation,
   height,
   formHeight,
+  handleOpen,
+  handleClose,
+  handleApp
+
 }) {
   const [suggestionsArray, setSuggestionsArray] = useState({
     suggestions: [],
@@ -31,63 +42,67 @@ export default function index({
     input: "",
   });
 
-  const { step, isOpen } = service;
 
-  function handleOpen(e) {
-    handleService({
-     isOpen: !isOpen,
-    });
-  }
+  const divRef = useRef()
+
+  const{isOpen,step} = app
+
+
+  useEffect(() => {
+
+    if (divRef.current) {
+     
+      const { clientWidth, clientHeight } = divRef.current;
+
+      handleApp({cardHeight:clientHeight})
+    }
+  }, [divRef,isOpen]);
+
+
+
 
   return (
-    <>
-   
-      <div data-step={step} className={styles["card-container"]}>
-        <div data-isopen={isOpen}  className={styles["card"]}>
-        <div className={styles["front-content"]}>
-        
-          <CadTop
-            myLocation={myLocation}
-            avatar={avatar}
-            handleOpen={handleOpen}
-          />
 
-        
 
-          </div>
+<>
 
-          <div className={styles["content"]}>
-            <div className={styles["heading"]}>
-              {isOpen && (
-                <>
-                  <Tables service={service} handleService={handleService} />
-                  <IconButton onClick={handleOpen}>
-                    <CancelSharpIcon />
-                  </IconButton>
-                </>
-              )}
-            </div>
 
-            {isOpen && step == 1 && (
-              <OriginDestination
-                handleService={handleService}
-                service={service}
-              />
-            )}
 
-{isOpen && step == 2 && (
-                <CardService config={config} handleService={handleService} service={service}  />
-            )}
+    <div ref={divRef} data-step={2}  data-isopen={true} className={styles['card']}>
+
+
+{isOpen &&(    <Tables service={service} handleApp={handleApp} />)}
+
+
+
+     { 2 == 1 &&( <OriginDestination
+      step={step}
+      service={service}
+      handleService={handleService}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      app={app}
       
+      
+      />)}
+    { 2 == 2 && true &&( <Service handleApp={handleApp} app={app} config={config} service={service} handleService={handleService}  />
+)}
+  
+  <div onClick={()=> isOpen? handleClose() : handleOpen() } className={styles.close}>
+  {isOpen?(<CloseRounded/>) : <LaunchIcon/> }
+  
+  </div>
 
-      {isOpen && step == 3 && (
-                <CardForm config={config} handleService={handleService} service={service}  />
-            )}
+<div className={styles.sss} />
 
 
-          </div>
-        </div>
-      </div>
-    </>
-  );
+
+
+  </div>
+
+
+
+
+ </>
+ );
 }

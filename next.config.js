@@ -25,4 +25,21 @@ module.exports = {
     );
     return config;
   },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'painel.freteme.com',
+        port: '',
+        pathname: '/v1/storage/buckets/img/files/**',
+      },
+    ],
+  },
+
+  images: {
+    domains: ['painel.freteme.com'],
+  },
 };
+
+

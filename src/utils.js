@@ -28,6 +28,22 @@ export const progress = () => {
   return Math.floor(Math.random() * 90) + 10 + "%";
 };
 
+export function maskBrazilianPhone(value) {
+  const cleaned = ('' + value).replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{2})(\d{3,4})(\d{4})$/);
+  if (match) {
+    const part1 = match[1];
+    const part2 = match[2];
+    const part3 = match[3];
+    return `(${part1}) ${part2}-${part3}`;
+  }
+  return value;
+}
+
+const phoneNumber = "11912345678";
+console.log(maskBrazilianPhone(phoneNumber)); // Output: (11) 91234-5678
+
+
 export const formatPrice = (data) => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

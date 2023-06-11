@@ -1,3 +1,5 @@
+@import ../../styles/helpers
+
 .tabs
   display: flex
   position: relative
@@ -10,8 +12,9 @@
     z-index: 2
 
 .container
- width: 100%
+ width: 80%
  input[type="radio"]
+  color: $n6
   display: none
 
 
@@ -19,14 +22,16 @@
   display: flex
   align-items: center
   justify-content: center
-  height: 60px
+  height: 30px
   width: calc( 100% / 3 - 10px  )
-  font-size: 20px
-  color: black
+  font-size: 14px
+  color: $n5
   font-weight: 500
   border-radius: 99px
   cursor: pointer
   transition: color 0.15s ease-in
+  font-family: Roboto
+
 
 .notification
   display: flex
@@ -45,10 +50,10 @@
   transition: 0.15s ease-in
 
 .container input[type="radio"]:checked + label
-  color: #185ee0
+  color: #fff
 
 .container input[type="radio"]:checked + label > .notification
-  background-color: #185ee0
+  background-color: $p1
   color: #fff
   margin: 0px
 
@@ -64,13 +69,10 @@
 .glider
   position: absolute
   display: flex
-  height: 60px
+  height: 30px
   width: calc( 100% / 3 - 15px  )
-  background-color: #e6eef9
+  background-color: $p1
   z-index: 1
   border-radius: 99px
   transition: 0.25s ease-out
 
-@media (max-width: 700px)
-  .tabs
-    transform: scale(0.6)
