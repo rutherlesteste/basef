@@ -184,12 +184,7 @@ const CardHome = (props) => {
             style.container
         }>
             <div className={style.row}>
-              
-              {
-              /*  <Image src={require('../../images/location.svg')} />
-              
-            */
-            }
+                <Image src={require('../../images/location.svg')} />
 
                 <div className={style.coll_input}>
 
@@ -197,7 +192,7 @@ const CardHome = (props) => {
 
 
 
-                        <input   
+                        <input onClick={()=>handleOpen()   }
                                       placeholder="De Onde?"
                                       onChange={
                                           (e) => handleInputChange("origin", e.target.value)
@@ -209,9 +204,7 @@ const CardHome = (props) => {
                         <Image src={require('../../images/calendar.svg')} />
 
                     </div>
-
-
-             { /*      <div className={style.origin}>
+                    <div className={style.origin}>
 
 
 
@@ -225,10 +218,6 @@ const CardHome = (props) => {
                        
 
                     </div>
-                
-                
-                */
-                }
 
                 </div>
 
