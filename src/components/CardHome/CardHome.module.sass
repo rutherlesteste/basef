@@ -2,8 +2,9 @@
 .card
 
   width: 100%
-  height: 250px
-  bottom: 0
+  height: auto
+  
+
 
   display: flex
 
@@ -14,11 +15,10 @@
   border-radius: 22px 22px 0 0
   flex-direction: column
   z-index: 10
-  padding: 26px 10px 26px 10px
+  
 
   transition: all 0.3s linear
-  background: #FFFFFF
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1)
+
 
   border-radius: 22px 22px 0px 0px
 
@@ -289,12 +289,12 @@
   background-color: #ffffff
 
 .sss
-  top: 7px
+  
   align-self: center
   width: 36px
   height: 5px
-  z-index: 30
-  position: absolute
+  
+  position: relative
   border-radius: 4px
   background: rgba(60, 60, 67, 0.3)
 
@@ -325,25 +325,164 @@
   z-index: 20
 
 .notifications
-  position: absolute
+  position: relative
   display: flex
-  top: -20%
-  flex-direction: row
-  justify-content: flex-end
-  left: 0
-  right: 0
-
+  
+  padding: 0px 16px 0px 16px
+  flex-direction: column
+  justify-content: center
+  outline-color: $p1
+  outline-style: solid
+  outline-width: 16px
+  
+ 
   background: $p1
-  min-height: 80px
-  z-index: -100
+  border-radius: 22px 22px  0px 0px
+  
+
+
+  min-height: 230px
+    
+
+  width: 100%
+
+  z-index: 0
+
+
+
+  
+  
+.div_content
+    
+    height: 50%
+    border-radius:  22px 22px 0px 0px 
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    border-block-color: $n
+    padding: 0
+    flex-direction: column
+    background: #FFFFFF
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1)
+
+
+  
+.master
+  display: flex
+  flex-direction: column
+  width: 100%
+  height: auto
+  justify-content: flex-end
+  bottom: 10%
+  position: relative
 
 .services
   display: flex
-  background-color: $p1
+  //background-color: $p1
+  border-radius:  22px 22px 0px 0px 
 
-  border-radius: 22px 22px 0px 0px
-  padding-block-start:  20px 
 
+  
+  flex-direction: column
+  justify-content: space-between
+  width: auto
+  height: auto
+  background: #FFFFFF
+
+  position: relative
+  padding: 0px 10px 0px 10px
+
+
+
+
+.header_card2
+  display: flex
+  flex-direction: column
+  justify-content: flex-start
+  align-items: flex-start
+  padding: 20px
+  width: 100%
 
 .card_services
   padding: 16px 0px 4px 0px
+
+  
+.block
+  display: flex
+  flex-direction: row
+  align-items: center
+
+  width: 100%
+  justify-content: space-around
+.text1
+
+  display: flex
+  flex-wrap: nowrap
+  flex-direction: column
+  width: fit-content
+  gap: 3%
+  h3
+  color: $n1
+  font-weight: 400
+
+
+
+.btn
+  background-color: $n
+  
+  color: $p1
+  border-radius: 50px
+  width: 35vw
+  height: 45px
+  
+  font-size: 19px
+  display: flex
+  justify-content: space-around
+  align-items: center
+  font-weight: 500
+  flex-direction: row
+  svg
+    color: $gray
+    font-size: 24px
+
+
+.close
+  display: flex
+  justify-content: center
+  align-self: flex-start
+  width: 5%
+
+
+  button
+  align-self: flex-start
+  border-radius: 50px
+  width: 22px
+  height: 22px
+  background-color: $ligth_gray
+  padding: 5px
+  svg
+    color: $n4
+    opacity: 0.8
+    font-size: 20px
+
+.content_close
+  display: flex
+  justify-content: center
+  align-self: flex-start
+  width: 5%
+
+
+  button
+  align-self: flex-start
+  border-radius: 50px
+  width: 22px
+  height: 22px
+  background-color: $ligth_gray
+  padding: 5px
+  justify-content: center
+  align-items: center
+  svg
+    color: $n4
+    opacity: 0.8
+    font-size: 20px

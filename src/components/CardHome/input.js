@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from './Card.module.sass'
+import styles from './CardHome.module.sass'
 
 const Page1 = (props) => {
   const {isOpen, handleOpen} = props

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import styles from "./Card.module.sass";
+import Cards from '../Cards'
+import styles from "./CardHome.module.sass";
 import CadTop from "./CadTop";
 const avatar = require("../../images/avatar.jpg");
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -8,13 +9,14 @@ import List from "../List";
 import Servico from "../Servico";
 import Tables from "@/components/Tables";
 import Icon from "../Icon";
-import { CancelOutlined, CloseFullscreen, CloseRounded } from "@mui/icons-material";
+import { CancelOutlined, CloseFullscreen, CloseRounded, LocationDisabledOutlined } from "@mui/icons-material";
 import OriginDestination from "./OriginDestination";
 import CancelSharpIcon from "@mui/icons-material/CancelSharp";
 import { IconButton } from "@mui/material";
 import Map2 from "@/pages/home/components/Map2/index copy";
 import CardForm from "../CardForm";
 import Imput from './input'
+import cn from 'classnames'
 //import Service from '../CardService/Service'
 import CardNotification from '../CardNotification'
 import Service from '../Services'
@@ -64,11 +66,58 @@ export default function Index({
   return (
 
 
-    <>
+    <div className={styles.master}>
+      <div className={styles.notifications} >
+        <div className={styles.block}>
 
-      <div className={styles.services}>
+          <div className={styles.header_card2}>
+            <h3 className={cn(styles.text1, "h3")}>
+              Para ter uma melhor experiencia
 
-        <div ref={divRef} data-step={2} data-isopen={true} className={styles['card']}>
+            </h3>
+
+            <span className={cn(styles.text1, "title-1")}>
+              Por favor ative a permissção da localização
+
+            </span>
+
+          </div>
+
+          <div>
+            <div className={cn(styles.btn)}>
+              <span>Compartilhar</span>
+              <LocationDisabledOutlined />
+            </div>
+          </div>
+
+          <div className={styles.content_close}>
+
+           
+              <IconButton>
+                <CloseRounded />
+              </IconButton>
+        
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div className={styles.div_content}>
+
+      </div>
+
+
+      <Cards className={cn(styles.services)}
+
+
+      >
+
+
+
+
+        <Cards ref={divRef} data-step={2} data-isopen={true} className={styles['card']}>
 
 
           {isOpen && (<Tables service={service} handleApp={handleApp} />)}
@@ -101,16 +150,21 @@ export default function Index({
             
               */
           }
-          <div className={styles.sss} />
 
 
 
 
-        </div>
 
 
-      </div>
 
-    </>
+
+        </Cards>
+
+
+
+
+      </Cards>
+
+    </div>
   );
 }
