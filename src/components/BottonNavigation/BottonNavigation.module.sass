@@ -11,7 +11,7 @@
     z-index: 2
 
 .container
-  width: 70%
+  width: 90%
 
   input[type="radio"]
     display: none
@@ -60,13 +60,18 @@
   transition: 0.15s ease-in
 
 .container input[type="radio"]:checked + label
+  display: flex
+  justify-content: center
+  gap: 10px
+  align-items: center
   transition: 0.25s all linear
   color: $n
   img
-    transform: translateX(-30%)
+ 
   svg
     color: $n
-    transform: translateX(-90%)
+
+    
   p
     color: $n
     font-size: 7px
@@ -81,7 +86,8 @@
   transform: translateX(0)
 
 .container input[id="2"]:checked ~ .glider
-  transform: translateX(80%)
+  transform: translateX(100%)
+  
 
 .container input[id="3"]:checked ~ .glider
   transform: translateX(200%)

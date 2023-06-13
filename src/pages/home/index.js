@@ -129,10 +129,7 @@ const Index = () => {
         handleApp={handleApp}
         user={user}
       />
-      <div className={styles.tab}>
-
-      <ButtonNavigation/>
-      </div>
+ 
     </div>
 
 
