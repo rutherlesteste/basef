@@ -1,58 +1,85 @@
 @import ../../styles/helpers.sass
 
-
-
-
-.col--search
-    display: flex
-    flex-direction: column
+.container
+    fill: #6C6C6C
     width: 100%
-    justify-content: flex-start
-
-.search
-
-    width: 100%
-   
-    
-    &:hover
-        
-    
-
-.rectangle-1-2-1-2
-    border-radius: 20px
-    height: 25px
-    width: 25px
-
-.frame-3
     display: flex
+    overflow: auto
+    min-height: 100vh
+    align-items: center
     flex-direction: column
-    justify-content: space-between
+
+.fav
+    width: 100%
+    height: auto
+    display: flex
+    align-items: center
+    flex-shrink: 0
+    border-radius: 10px
+    flex-direction: column
+    background-color: rgba(255, 255, 255, 1)
+
+.cart
+    gap: 12px
+    width: 327px
+    display: flex
+    padding: 16px 16px 16px 0
+    align-items: center
+    flex-shrink: 0
+    border-color: rgba(189, 189, 189, 1)
+    border-style: solid
+    border-width: 0 0 0.4000000059604645px
+
+.home
+    gap: 10px
+    width: 30px
+    height: 30px
+    display: flex
+    align-items: center
+    flex-shrink: 0
+    border-radius: 30px
+    padding: 5px
+    flex-direction: column
+    justify-content: center
+    background-color: rgba(235, 235, 235, 1)
+    svg
+        font-size: 20px
+        fill:  #6C6C6C
+
+
+.contetn
+    gap: 3px
+    width: 237px
+    display: flex
     align-items: flex-start
-    height: 50px
+    flex-shrink: 0
+    flex-direction: column
 
-.text-1
-    text-align: left
-    vertical-align: middle
+.text
+    color: $n7
+    height: auto
     font-size: 15px
+    font-style: Semibold
+    text-align: center
     font-family: Roboto
-    line-height: 34px
-    color: $n5
-    font-weight: 400
+    font-weight: 500
+    line-height: normal
+    font-stretch: normal
+    text-decoration: none
     white-space: nowrap
-    max-width: 100%
-    overflow: hidden
-    text-overflow: ellipsis
 
 
-.text-2
-    text-align: left
-    vertical-align: top
-    font-size: 12px
-    font-family: Roboto
-    line-height: 11px
-    color: $n4
-    font-weight: 400
-    margin-block-end: 5px
-    max-width: 100%
-    overflow: hidden
-    text-overflow: ellipsis
+    &1
+        color: $n4
+        height: auto
+        font-size: 12px
+        font-style: Regular
+        text-align: center
+        font-family: Roboto
+        font-weight: 300
+        line-height: normal
+        font-stretch: normal
+        text-decoration: none
+        white-space: nowrap
+
+

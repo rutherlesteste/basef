@@ -27,7 +27,10 @@ const ServiceSlice = createSlice({
       isOpen : false,
       boundingBoxOrigin: null,
       boundingBoxDestination: null,
+      onLoad: null
     },
+
+    
   },
 
   reducers: {

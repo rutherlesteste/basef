@@ -1,303 +1,128 @@
-import React, { useRef, useState } from "react";
-import CardService from "../CardService";
-import style from "./Card.module.sass";
-import Image from "next/image";
-import Icon from "../Icons";
-import useGetRoute from "@/utils/getRouter";
-import { setService } from "@/context/serviceSlice";
-import List from "../List";
-import { CancelOutlined, LocationDisabled } from "@mui/icons-material";
-import { Divider, IconButton, Paper, styled } from "@mui/material";
-import CardForm from "../CardForm";
-import Servico from "../Servico";
-import { debounce } from "lodash";
-import cn from "classnames";
-import CircleNotificationsSharpIcon from "@mui/icons-material/CircleNotificationsSharp";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import Cards from '../Cards'
+import styles from "./CardHome.module.sass";
+import CadTop from "./CadTop";
 const avatar = require("../../images/avatar.jpg");
-import Modal from "./modal";
-import { Tabs, Tab, FILL } from "baseui/tabs-motion";
-import CardHeader from "./CadTop";
-const CardHome = ({
+import LaunchIcon from '@mui/icons-material/Launch';
+import CardService from "../CardService";
+import List from "../List";
+import Servico from "../Servico";
+import Tables from "@/components/Tables";
+
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import Icon from "../Icon";
+import { CancelOutlined, CloseFullscreen, CloseRounded, LocationDisabledOutlined } from "@mui/icons-material";
+import OriginDestination from "./OriginDestination";
+import CancelSharpIcon from "@mui/icons-material/CancelSharp";
+import { IconButton } from "@mui/material";
+import Map2 from "@/pages/home/components/Map2/index copy";
+import CardForm from "../CardForm";
+import Imput from './input'
+import cn from 'classnames'
+import Paper from '@mui/material/Paper';
+//import Service from '../CardService/Service'
+import CardNotification from '../CardNotification'
+import Service from '../Services'
+
+export default function Index({
   handleService,
   service,
   config,
+  app,
   user,
   latitude,
   longitude,
-}) => {
+  myLocation,
+  setNewLocation,
+  height,
+  formHeight,
+  handleOpen,
+  handleClose,
+  handleApp
+
+}) {
   const [suggestionsArray, setSuggestionsArray] = useState({
     suggestions: [],
     isOpen: false,
     input: "",
   });
 
+
+  const divRef = useRef()
+
+  const { isOpen, step } = app
+
+
+  useEffect(() => {
+
+    if (divRef.current) {
+
+      const { clientWidth, clientHeight } = divRef.current;
+
+      handleApp({ cardHeight: clientHeight })
+    }
+  }, [divRef, isOpen]);
+
+
+
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(2),
-    textAlign: "center",
+
+
     color: theme.palette.text.secondary,
-    justifyContent: "space-around",
-    alignItems: "center",
+    height: 'auto',
+
   }));
 
-  const [activeKey, setActiveKey] = React.useState("0");
-
-  const locationRef = useRef(null);
-  const destinationRef = useRef(null);
-
-  const [locationInput, setLocationInput] = useState({
-    origin: "",
-    destination: "",
-    valueOrigin: "",
-    valueDestination: "",
-    inputType: "",
-  });
-
-  const step = service.step
-
-  const handleRoute = debounce(async (data, input) => {
-    if (!data || data.length < 1) {
-      setSuggestionsArray({
-        ...suggestionsArray,
-        isOpen: false,
-        suggestions: [],
-      });
-
-      if (locationInput.inputType === "origin") {
-        setService({
-          origin: null,
-        });
-      } else {
-        setService({
-          destination: null,
-        });
-      }
-
-      return;
-    }
-
-    if (data.length > 3) {
-      const routeSuggestions = await useGetRoute(data, input);
-
-      setSuggestionsArray({
-        ...suggestionsArray,
-        isOpen: true,
-        suggestions: routeSuggestions,
-        input: input,
-      });
-    }
-  }, 300);
-
-  const handleSetOrigem = async (data) => {
-    if (locationInput.inputType === "origin") {
-      setLocationInput({
-        ...locationInput,
-        valueOrigin: data.place_name,
-      });
-
-      handleService({
-        ...service,
-        originPlace: data.place_name,
-        origin: [data.center[0], data.center[1]],
-        latitude: data.center[1],
-        longitude: data.center[0],
-      });
-
-      setSuggestionsArray({
-        ...suggestionsArray,
-        suggestions: [],
-        isOpen: false,
-      });
-
-      destinationRef.current.focus();
-    } else {
-      setLocationInput({
-        ...locationInput,
-        valueDestination: data.place_name,
-      });
-
-      setSuggestionsArray({
-        ...suggestionsArray,
-        suggestions: [],
-        isOpen: false,
-      });
-
-      handleService({
-        ...service,
-        destinationPlace: data.place_name,
-        destination: [data.center[0], data.center[1]],
-        latitude: data.center[1],
-        longitude: data.center[0],
-      });
-    }
-  };
-
-  const handleInputChange = (locationType, value) => {
-    if (locationType === "origin") {
-      setLocationInput({
-        ...locationInput,
-        valueOrigin: value,
-        inputType: locationType,
-      });
-      handleRoute(value, locationType);
-    } else {
-      setLocationInput({
-        ...locationInput,
-        valueDestination: value,
-        inputType: locationType,
-      });
-      handleRoute(value, locationType);
-    }
-  };
-
-  const del = (input) => {
-    if (input == "origin") {
-      setLocationInput({
-        ...locationInput,
-        valueOrigin: "",
-      });
-
-      handleService({
-        ...service,
-
-        origin: null,
-      });
-    } else {
-      setLocationInput({
-        ...locationInput,
-        valueDestination: "",
-      });
-      handleService({
-        ...service,
-        destination: null,
-      });
-    }
-  };
-
   return (
-
-    <div
-      className={cn("container", {
-        "card-open": suggestionsArray.isOpen,
-        "card-closed": !suggestionsArray.isOpen,
-      })}
-    >
-      <div className={style["card-container"]}>
-        <Item className={style.card}>
-
-          <div className={style.divider} />
+    <>
 
 
 
-       <CardHeader avatar={avatar}/>
+
+      <Item elevation={3} ref={divRef} data-step={2} data-isopen={true} className={cn(styles.card)}>
 
 
-          <div className={style.tab}>
-    {step == 1 &&(      <div className={style["input--origem"]}>
-                <div className={style["address--conteiner-origem"]}>
-                  <Icon
-                    className={style["svgorigin--destino"]}
-                    name="originDestination"
-                  />
-                  <div className={style["address"]}>
-                    <div
-                      style={{
-                        flexDirection: "row",
-                        display: "flex",
-                        width: "100%",
-                      }}
-                    >
-                      <input
-                        className={style["input--address"]}
-                        placeholder="De Onde?"
-                        onChange={(e) =>
-                          handleInputChange("origin", e.target.value)
-                        }
-                        value={locationInput.valueOrigin}
-                        ref={locationRef}
-                      />
-                      <IconButton onClick={() => del("origin")}>
-                        <CancelOutlined />
-                      </IconButton>
-                    </div>
-                    <div
-                      style={{
-                        borderTopColor: "gray",
-                        borderTopWidth: "1px",
-                        borderTopStyle: "solid",
-                        width: "100%",
-                        marginBlock: "10px",
-                        height: "1px",
-                      }}
-                    />
-                    <div
-                      style={{
-                        flexDirection: "row",
-                        display: "flex",
-                        width: "100%",
-                      }}
-                    >
-                      <input
-                        className={style["input--address"]}
-                        placeholder="Para onde?"
-                        ref={destinationRef}
-                        onChange={(e) =>
-                          handleInputChange("destination", e.target.value)
-                        }
-                        value={locationInput.valueDestination}
-                      />
-
-                      <IconButton onClick={() => del("destination")}>
-                        <CancelOutlined />
-                      </IconButton>
-                    </div>
-                  </div>
-                </div>
-              </div>)}
 
 
-       
-      
-      
 
 
-            {suggestionsArray.isOpen &&
-              suggestionsArray.suggestions.map((suggestion, index) => (
-                <List
-                  handleSetOrigem={handleSetOrigem}
-                  suggestion={suggestion}
-                  index={index}
-                  input={suggestionsArray.input}
-                />
-              ))}
 
 
-          
 
-              
-              
-            {step == 2 && service.distance > 0 &&
-          config?.map((config, index) => (
-            <div key={index} style={{ padding: "3%", width: "100%" }}>
-              <CardService distance={service.distance} config={config} />
-            </div>
-          ))}
 
-       
 
-            {step == 3 && (
-          <div style={{ padding: "3%", width: "100%" }}>
-            <Servico config={config} />
-          </div>
-        )}
-   
+        <OriginDestination
+          step={step}
+          service={service}
+          handleService={handleService}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          app={app}
 
-          </div>
-        </Item>
-      </div>
-    </div>
+
+
+
+
+
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </Item>
+
+    </>
   );
-};
-
-export default CardHome;
+}

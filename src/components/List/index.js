@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./List.module.sass";
+import styles from "./List.module.sass";
 import Icon from "../Icons";
 import { ListItem, ListItemLabel ,MenuAdapter,ARTWORK_SIZES} from "baseui/list";
 import { Check, ChevronRight } from "baseui/icon";
@@ -24,31 +24,21 @@ export default function RenderRow({ suggestion, handleSetOrigem ,index }) {
     "Endereço não encontrado";
 
   return (
-    <div key={index} className={style.search} onClick={()=> handleSetOrigem(suggestion)}>
-    
-    <MenuAdapter>
-    <ListItem
-   
-    artworkSize={ARTWORK_SIZES.LARGE}
-    
 
 
-      artwork={(props) =>  <PinDropTwoTone sx={{width: '25px', height:'25px'}} />}
-      endEnhancer={() => <ChevronRight />}
 
-      overrides={{
-        Content: {
-          style: ({ $theme }) => ({
-        
+  
 
-            textAlign: "left"
-          })
-        },
-        
-      }}
-    >
-      <ListItemLabel
-        description={
+<div key={index} onClick={()=> handleSetOrigem(suggestion)} className={styles['fav']}>
+        <div className={styles['cart']}>
+          <div className={styles['home']}>
+            <svg viewBox="0 0 1024 1024" className={styles['icon']}>
+              <path d="M512 490q44 0 75-31t31-75-31-75-75-31-75 31-31 75 31 75 75 31zM512 86q124 0 211 87t87 211q0 62-31 142t-75 150-87 131-73 97l-32 34q-12-14-32-37t-72-92-91-134-71-147-32-144q0-124 87-211t211-87z"></path>
+            </svg>
+          </div>
+          <div className={styles['contetn']}>
+            <span className={styles['text']}>{suggestion?.properties?.name || "Endereço inválido"}</span>
+            <span className={styles['text1']}>{
           neighborhood != "undefined "
             ? neighborhood
             : "" + place != "undefined "
@@ -56,12 +46,15 @@ export default function RenderRow({ suggestion, handleSetOrigem ,index }) {
             : "" + region != "undefined "
             ? region
             : ""
-        }
-      >
-        {suggestion?.properties?.name || "Endereço inválido"}
-      </ListItemLabel>
-    </ListItem>
-    </MenuAdapter>
-    </div>
+        }</span>
+          </div>
+        </div>
+      </div>
+
+
+
+    
+
+
   );
 }

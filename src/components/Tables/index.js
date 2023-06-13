@@ -4,13 +4,13 @@ import styles from './Tables.module.sass';
 
 
 
-export default function Tables({handleService,service}) {
+export default function Tables({handleApp,app}) {
 
   const handleStep = (step) =>{
     console.log(step)
-    handleService(
+    handleApp(
       {
-        ...service,
+
         step:step
 
       }
@@ -19,9 +19,9 @@ export default function Tables({handleService,service}) {
   return (
     <div className={styles.container}>
     <div className={styles.tabs}>
-      <input onChange={(e)=> handleStep(e.target.id)} type="radio" id="1" name="tabs" defaultChecked="" />
+      <input onChange={(e)=> handleStep(e.target.id)} type="radio" id="1" name="tabs" defaultChecked="1" />
       <label className={styles.tab} htmlFor="1">
-        Local<span className={styles.notification}>2</span>
+        Local
       </label>
       <input onChange={(e)=> handleStep(e.target.id)} type="radio" id="2" name="tabs" />
       <label className={styles.tab} htmlFor="2">
