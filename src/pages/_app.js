@@ -32,9 +32,9 @@ export default function App(props) {
             <BaseProvider theme={LightTheme}>
             <ThemeProvider theme={muiTheme}>
         <CssBaseline />
-              <Layout>
+              
                 <Component {...pageProps} />
-              </Layout>
+      
               
               </ThemeProvider>
             </BaseProvider>

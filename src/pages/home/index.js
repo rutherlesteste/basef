@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.sass";
 import Map2 from "./components/Map2";
 import { useSelector, useDispatch } from "react-redux";
-import { setService  } from "@/context/serviceSlice";
-import { setApp  } from "@/context/appSlice";
+import { setService } from "@/context/serviceSlice";
+import { setApp } from "@/context/appSlice";
 import useHandleConfig from "@/hooks/useConfig";
 import useHandleNotification from "@/hooks/useNotification";
 import useHandleService from "@/hooks/useService";
@@ -12,13 +12,14 @@ import getMylocation from "@/utils/getMylocation";
 import CardHome from "@/components/CardHome";
 import CardNotification from '@/components/CardNotification'
 import CardServices from './CardServises'
+import ButtonNavigation from '../../components/BottonNavigation'
 const Index = () => {
   const dispatch = useDispatch();
   const service = useSelector((state) => state.service.service);
   const app = useSelector((state) => state.app.app);
 
-  const { origin, destination, location , onLoad} = service;
-  const {isOpen,step} = app
+  const { origin, destination, location, onLoad } = service;
+  const { isOpen, step } = app
   const divRef = useRef();
   const avatar = require('../../images/avatar.jpg')
   const { config } = useHandleConfig();
@@ -49,7 +50,7 @@ const Index = () => {
         setLongitude(longitude);
         if (!location || !service)
           return;
-        dispatch(setService({ location: [longitude, latitude], latitude:latitude, longitude:longitude }));
+        dispatch(setService({ location: [longitude, latitude], latitude: latitude, longitude: longitude }));
       } catch (error) {
         console.error("Error getting current location:", error);
       }
@@ -82,8 +83,8 @@ const Index = () => {
 
   const handleOpen = () => {
 
-    dispatch(setApp({...app, isOpen: true }))
-  
+    dispatch(setApp({ ...app, isOpen: true }))
+
   }
 
 
@@ -93,12 +94,26 @@ const Index = () => {
   return (
 
     <div className={styles['home']}>
-  
 
+      <div data-isopen={true} className={styles.map} >
+        <Map2
+          cardHeight={800}
+          setNewLocation={setNewLocation}
+          service={service}
+          formHeight={formHeight}
+          handleService={handleService}
+          step={2}
+          app={app}
+          myLocation={myLocation}
+          config={config}
+          latitude={latitude}
+          longitude={longitude}
+          user={user && user.name && toName(user.name)}
+        />
 
-  
+      </div>
 
-      <CardHome 
+      <CardHome
         handleService={handleService}
         service={service}
         step={app.step}
@@ -114,9 +129,13 @@ const Index = () => {
         handleApp={handleApp}
         user={user}
       />
+      <div className={styles.tab}>
+
+      <ButtonNavigation/>
+      </div>
     </div>
 
-  
+
   )
 }
 

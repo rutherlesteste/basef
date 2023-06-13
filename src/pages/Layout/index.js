@@ -25,7 +25,7 @@ export default function Layout({ children }) {
 
  {children}
 
- {!isOpen && (<BottonNavigation handleApp={handleApp} step={step} app={app}  />)}
+ {1==1 && (<div className={styles.tab}><BottonNavigation handleApp={handleApp} step={1} app={app}  /></div>)}
     </div>
     </>
   );

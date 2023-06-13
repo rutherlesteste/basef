@@ -4,7 +4,9 @@ import CardDetails1 from "./card-details1";
 import CardDetail2 from "./card-detail2";
 import styles from "./Service.module.sass";
 import useHandleConfig from "@/hooks/useConfig";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import { ArrowLeft } from "@mui/icons-material";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 const Servico = () => {
   const { config } = useHandleConfig();
 
@@ -14,33 +16,34 @@ const Servico = () => {
 
 
 
-      <NavBar />
 
-      <div className={styles.containerServices}>
+
+   
 
         {config.reverse().map((item, key) =>
 
-          <div className={styles.services} key={key}>
-            <ServicesCard config={item} />
-          </div>
+            <ServicesCard config={item} key={key} />
+
 
 
         )}
-      </div>
 
-      <div className={styles.body}>
-        <CardDetails1 />
-        <CardDetail2 />
-      </div>
+
 
       <div className={styles.footer}>
+
         <div className={styles.content}>
-          <p>R$ 89.00</p>
-          <span>Moto frete</span>
+        
+         <IconButton>
+          <KeyboardBackspaceIcon/>
+          </IconButton>
+
         </div>
+
         <div className={styles.button}>
-          <Button>Solicitar</Button>
+          <Button>Escolha o serviço</Button>
         </div>
+
       </div>
 
     </div>

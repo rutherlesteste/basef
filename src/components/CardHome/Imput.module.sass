@@ -1,14 +1,18 @@
 @import ../../styles/helpers.sass
+
 .container
   display: flex
   flex-direction: column
   justify-content: flex-start
   align-items: flex-start
-  height: 100%
+  height: 150px
+  gap: 20px
 
   width: 100%
 
-
+.history
+  width: 100%
+  height: 50px
 
 .divider
   background-color: #D5DDE0
@@ -23,9 +27,6 @@
 .tab
   width: 100%
   padding-block-start: 3%
-
-
-
 
 .card
   border-top-left-radius: 32px
@@ -122,7 +123,6 @@
 
   padding-block-start: 3px
   width: 100%
-  
 
 .address--conteiner-origem
   height: auto
@@ -179,8 +179,6 @@
 
   width: 100%
 
-
-
 .place-svg
   height: 30px
   width: 30px
@@ -214,10 +212,9 @@
   font-weight: 500
   color: $n2
 
-
 #rig
-   align-self: center
-   justify-self: center
+  align-self: center
+  justify-self: center
 
 .list
   transition: 0.2s all linear
@@ -230,3 +227,49 @@
 
 .list[data-isopen='true']
   opacity: 1
+
+.origin
+  display: flex
+  width: 100%
+  align-items: center
+  justify-content: space-around
+
+  flex-direction: row
+
+  border: 1px $n3 solid
+  border-radius: 10px
+  padding: 10px 10px 10px 10px
+  background-color: #f7f8fa
+
+  input
+    width: 100%
+    height: 35px
+    padding: 5px
+    background-color: #f7f8fa
+
+    font-size: 18px
+    font-family: Robto,sans-serif
+
+  img
+
+    width: 35px
+    height: 35px
+
+.coll_input
+  display: flex
+  flex-direction: column
+  width: 90%
+  gap: 25px
+
+.row
+  padding: 0px 5px 0px 5px
+  display: flex
+  flex-direction: row
+  justify-content: flex-start
+  width: 100%
+  height: auto
+  align-items: center
+  gap: 3%
+  img
+    width: 25px
+    height: 100%

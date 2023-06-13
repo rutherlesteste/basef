@@ -45,18 +45,18 @@ export default function Index({
 
   const divRef = useRef()
 
-  const{isOpen,step} = app
+  const { isOpen, step } = app
 
 
   useEffect(() => {
 
     if (divRef.current) {
-     
+
       const { clientWidth, clientHeight } = divRef.current;
 
-      handleApp({cardHeight:clientHeight})
+      handleApp({ cardHeight: clientHeight })
     }
-  }, [divRef,isOpen]);
+  }, [divRef, isOpen]);
 
 
 
@@ -64,45 +64,53 @@ export default function Index({
   return (
 
 
-<>
+    <>
+
+      <div className={styles.services}>
+
+        <div ref={divRef} data-step={2} data-isopen={true} className={styles['card']}>
+
+
+          {isOpen && (<Tables service={service} handleApp={handleApp} />)}
 
 
 
-    <div ref={divRef} data-step={2}  data-isopen={true} className={styles['card']}>
+          {1 == 1 && (<OriginDestination
+            step={step}
+            service={service}
+            handleService={handleService}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            app={app}
 
 
-{isOpen &&(    <Tables service={service} handleApp={handleApp} />)}
-
-
-
-     { 2 == 1 &&( <OriginDestination
-      step={step}
-      service={service}
-      handleService={handleService}
-      handleOpen={handleOpen}
-      handleClose={handleClose}
-      app={app}
-      
-      
-      />)}
-    { 2 == 2 && true &&( <Service handleApp={handleApp} app={app} config={config} service={service} handleService={handleService}  />
-)}
-  
-  <div onClick={()=> isOpen? handleClose() : handleOpen() } className={styles.close}>
-  {isOpen?(<CloseRounded/>) : <LaunchIcon/> }
-  
-  </div>
-
-<div className={styles.sss} />
+          />)}
+          {2 == 3 && true && (<div className={styles.card_services}> <Service handleApp={handleApp} app={app} config={config} service={service} handleService={handleService} /> </div>
+          )}
 
 
 
+          {
 
-  </div>
+            /*
+            
+            <div onClick={()=> isOpen? handleClose() : handleOpen() } className={styles.close}>
+              {isOpen?(<CloseRounded/>) : <LaunchIcon/> }
+              
+              </div>
+            
+              */
+          }
+          <div className={styles.sss} />
 
 
 
 
- </>
- );
+        </div>
+
+
+      </div>
+
+    </>
+  );
 }
